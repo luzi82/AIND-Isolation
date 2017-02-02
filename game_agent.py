@@ -7,6 +7,7 @@ You must test your agent's strength against a set of agents with known
 relative strength using tournament.py and include the results in your report.
 """
 import random
+import json
 
 
 class Timeout(Exception):
@@ -34,8 +35,28 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    # TODO: finish this function!
-    raise NotImplementedError
+    utility = game.utility(player)
+    if utility < -0.0001 or utility > 0.0001:
+        return utility
+
+    return custom_score_0(game, player)
+
+
+def custom_score_0(game, player):
+    flood_vv = create_flood_vv(game)
+
+
+def create_flood_vv(game):
+    game_board_state = game.__board_state__
+    board_vv = [[game_board_state[i][j]==isolation.Board.BLANK for j in game.width] for i in game.height]
+    flood_vv = [[False for i in range(game.width)] for j in range(game.height)]
+    flood(flood_vv,board_vv,game.get_player_location(game.__player_1__))
+    flood(flood_vv,board_vv,game.get_player_location(game.__player_2__))
+    return flood_vv
+
+
+def flood(flood_vv,board_vv,location):
+    delta=[[
 
 
 class CustomPlayer:
@@ -76,6 +97,8 @@ class CustomPlayer:
         self.method = method
         self.time_left = None
         self.TIMER_THRESHOLD = timeout
+
+        self.search_fn = self.minimax if method == 'minimax' else self.alphabeta
 
     def get_move(self, game, legal_moves, time_left):
         """Search for the best move from the available legal moves and return a
@@ -121,21 +144,27 @@ class CustomPlayer:
         # move from the game board (i.e., an opening book), or returning
         # immediately if there are no legal moves
 
+        search_depth = self.search_depth if (self.search_depth >= 0) else game.width*game.height + 1
+
+        ret = (-1,-1)
         try:
             # The search method call (alpha beta or minimax) should happen in
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
-            pass
+            if self.iterative:
+                for i in range(search_depth):
+                    _, ret = self.search_fn(game, i+1, legal_moves=legal_moves)
+            else:
+                _, ret = self.search_fn(game, search_depth, legal_moves=legal_moves)
 
         except Timeout:
             # Handle any actions required at timeout, if necessary
             pass
 
-        # Return the best move from the last completed search iteration
-        raise NotImplementedError
+        return ret
 
-    def minimax(self, game, depth, maximizing_player=True):
+    def minimax(self, game, depth, maximizing_player=True, legal_moves=None):
         """Implement the minimax search algorithm as described in the lectures.
 
         Parameters
@@ -163,10 +192,29 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        if legal_moves == None:
+            legal_moves = game.get_legal_moves()
 
-    def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
+        if len(legal_moves) <= 0:
+            return self.score(game, self), (-1, -1)
+
+        if depth == 0:
+            return self.score(game, self), (-1, -1)
+
+        ret_score = None
+        ret_move_list = None
+        for move in legal_moves:
+            game_0 = game.forecast_move(move)
+            tmp_score, _ = self.minimax(game_0, depth-1, not maximizing_player)
+            if ret_score == None or ( maximizing_player and ( tmp_score>ret_score ) ) or ( (not maximizing_player) and ( tmp_score<ret_score ) ):
+                ret_score = tmp_score
+                ret_move_list = [move]
+            elif tmp_score == ret_score:
+                ret_move_list.append(move)
+
+        return ret_score, random.choice(ret_move_list)
+
+    def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True, legal_moves=None):
         """Implement minimax search with alpha-beta pruning as described in the
         lectures.
 
