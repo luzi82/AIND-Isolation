@@ -8,6 +8,8 @@ relative strength using tournament.py and include the results in your report.
 """
 import random
 import json
+import numpy as np
+from collections import deque
 
 
 class Timeout(Exception):
@@ -42,22 +44,32 @@ def custom_score(game, player):
     return custom_score_0(game, player)
 
 
+knight_v=[(-1,-2),(1,-2),(-1,2),(1,2),(-2,-1),(2,-1),(-2,1),(2,1)]
+
+
 def custom_score_0(game, player):
-    flood_vv = create_flood_vv(game)
+    p0 = player
+    p1 = game.get_opponent(p0)
+    board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0))
+    board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1))
+    board_score_vv_d = board_score_vv_0-board_score_vv_1
+    board_state_vv = [[bs==Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
+    board_state_vv = np.array(board_state_vv)
+    return np.sum(board_state_vv*board_score_vv_d)
 
+cs0_decay = 1./8
+cs0_board_score_vv_dict = {}
 
-def create_flood_vv(game):
-    game_board_state = game.__board_state__
-    board_vv = [[game_board_state[i][j]==isolation.Board.BLANK for j in game.width] for i in game.height]
-    flood_vv = [[False for i in range(game.width)] for j in range(game.height)]
-    flood(flood_vv,board_vv,game.get_player_location(game.__player_1__))
-    flood(flood_vv,board_vv,game.get_player_location(game.__player_2__))
-    return flood_vv
-
-
-def flood(flood_vv,board_vv,location):
-    delta=[[
-
+def get_cs0_board_score_vv_dict(size_wh,location):
+    key = (size_wh,location)
+    if key in cs0_board_score_vv_dict:
+        return cs0_board_score_vv_dict[key]
+    w, h = size_wh
+    ret = np.zeros((h,w))
+    ret[h][w] = 1
+    queue = deque([(location,1)])
+    while(len(queue)>0):
+        
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
