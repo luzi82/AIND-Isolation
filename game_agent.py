@@ -11,6 +11,7 @@ import json
 import numpy as np
 from collections import deque
 import functools
+import isolation.isolation
 
 
 class Timeout(Exception):
@@ -53,7 +54,7 @@ def custom_score_0(game, player):
     board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0))
     board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1))
     board_score_vv_d = board_score_vv_0-board_score_vv_1
-    board_state_vv = [[bs==Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
+    board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
     board_state_vv = np.array(board_state_vv)
     return np.sum(board_state_vv*board_score_vv_d)
 
@@ -75,11 +76,11 @@ def get_cs0_board_score_vv_dict(size_wh,location):
             if ret[r][c] != 0:
                 continue
             ret[r][c] = score
-            location_score_q.append(knight_move,score)
+            location_score_q.append((knight_move,score))
     return ret
 
 @functools.lru_cache(maxsize=None)
-get_knight_move_v(size_wh,location):
+def get_knight_move_v(size_wh,location):
     w, h = size_wh
     r, c = location
     ret = []
@@ -87,13 +88,13 @@ get_knight_move_v(size_wh,location):
         rr, cc = knight
         rr += r
         cc += c
-        if r<0:
+        if rr<0:
             continue
-        if r>=h:
+        if rr>=h:
             continue
-        if c<0:
+        if cc<0:
             continue
-        if c>=w:
+        if cc>=w:
             continue
         ret.append((rr,cc))
     return ret
