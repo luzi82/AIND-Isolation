@@ -330,3 +330,96 @@ class CustomPlayer:
                 if beta <= alpha:
                     break
             return v, random.choice(ret_move_list)
+
+    def alphabeta_0(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True, legal_moves=None):
+        """Implement minimax search with alpha-beta pruning as described in the
+        lectures.
+
+        Parameters
+        ----------
+        game : isolation.Board
+            An instance of the Isolation game `Board` class representing the
+            current game state
+
+        depth : int
+            Depth is an integer representing the maximum number of plies to
+            search in the game tree before aborting
+
+        alpha : float
+            Alpha limits the lower bound of search on minimizing layers
+
+        beta : float
+            Beta limits the upper bound of search on maximizing layers
+
+        maximizing_player : bool
+            Flag indicating whether the current search depth corresponds to a
+            maximizing layer (True) or a minimizing layer (False)
+
+        Returns
+        ----------
+        float
+            The score for the current search branch
+
+        tuple(int, int)
+            The best move for the current branch; (-1, -1) for no legal moves
+        """
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise Timeout()
+
+        if legal_moves == None:
+            legal_moves = game.get_legal_moves()
+
+        if len(legal_moves) <= 0:
+            return self.score(game, self), (-1, -1)
+
+        if depth == 0:
+            return self.score(game, self), (-1, -1)
+
+        forecast_v = []
+        for move in legal_moves:
+            game_0 = game.forecast_move(move)
+            score_0 = self.score(game_0, self)
+            forecast = {
+                'move': move,
+                'game': game_0,
+                'score': score_0
+            }
+            forecast_v.append(forecast)
+
+        sort_factor = -1 if maximizing_player else 1
+        forecast_v = sorted(forecast_v, key=lambda forecast: sort_factor*forecast['score'])
+
+        # copy from wikipedia pseudocode
+        # https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+        if maximizing_player:
+            v = float("-inf")
+            ret_move_list = [(-1,-1)]
+            for forecast in forecast_v:
+                move = forecast['move']
+                game_0 = forecast['game']
+                vv, _ = self.alphabeta_0(game_0, depth-1, alpha, beta, not maximizing_player)
+                if vv>v:
+                    ret_move_list = [move]
+                elif vv==v:
+                    ret_move_list.append(move)
+                v = max(v, vv)
+                alpha = max(alpha, v)
+                if beta <= alpha:
+                    break
+            return v, random.choice(ret_move_list)
+        else:
+            v = float("inf")
+            ret_move_list = [(-1,-1)]
+            for forecast in forecast_v:
+                move = forecast['move']
+                game_0 = forecast['game']
+                vv, _ = self.alphabeta_0(game_0, depth-1, alpha, beta, not maximizing_player)
+                if vv<v:
+                    ret_move_list = [move]
+                elif vv==v:
+                    ret_move_list.append(move)
+                v = min(v, vv)
+                beta = min(beta, v)
+                if beta <= alpha:
+                    break
+            return v, random.choice(ret_move_list)
