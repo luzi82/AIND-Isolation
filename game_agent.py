@@ -289,5 +289,44 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        if legal_moves == None:
+            legal_moves = game.get_legal_moves()
+
+        if len(legal_moves) <= 0:
+            return self.score(game, self), (-1, -1)
+
+        if depth == 0:
+            return self.score(game, self), (-1, -1)
+
+        # copy from wikipedia pseudocode
+        # https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+        if maximizing_player:
+            v = float("-inf")
+            ret_move_list = [(-1,-1)]
+            for move in legal_moves:
+                game_0 = game.forecast_move(move)
+                vv, _ = self.alphabeta(game_0, depth-1, alpha, beta, not maximizing_player)
+                if vv>v:
+                    ret_move_list = [move]
+                elif vv==v:
+                    ret_move_list.append(move)
+                v = max(v, vv)
+                alpha = max(alpha, v)
+                if beta <= alpha:
+                    break
+            return v, random.choice(ret_move_list)
+        else:
+            v = float("inf")
+            ret_move_list = [(-1,-1)]
+            for move in legal_moves:
+                game_0 = game.forecast_move(move)
+                vv, _ = self.alphabeta(game_0, depth-1, alpha, beta, not maximizing_player)
+                if vv<v:
+                    ret_move_list = [move]
+                elif vv==v:
+                    ret_move_list.append(move)
+                v = min(v, vv)
+                beta = min(beta, v)
+                if beta <= alpha:
+                    break
+            return v, random.choice(ret_move_list)
