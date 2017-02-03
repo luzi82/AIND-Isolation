@@ -10,6 +10,7 @@ import random
 import json
 import numpy as np
 from collections import deque
+import functools
 
 
 class Timeout(Exception):
@@ -46,7 +47,6 @@ def custom_score(game, player):
 
 knight_v=[(-1,-2),(1,-2),(-1,2),(1,2),(-2,-1),(2,-1),(-2,1),(2,1)]
 
-
 def custom_score_0(game, player):
     p0 = player
     p1 = game.get_opponent(p0)
@@ -58,18 +58,45 @@ def custom_score_0(game, player):
     return np.sum(board_state_vv*board_score_vv_d)
 
 cs0_decay = 1./8
-cs0_board_score_vv_dict = {}
 
+@functools.lru_cache(maxsize=None)
 def get_cs0_board_score_vv_dict(size_wh,location):
-    key = (size_wh,location)
-    if key in cs0_board_score_vv_dict:
-        return cs0_board_score_vv_dict[key]
     w, h = size_wh
+    r, c = location
     ret = np.zeros((h,w))
-    ret[h][w] = 1
-    queue = deque([(location,1)])
-    while(len(queue)>0):
-        
+    ret[r][c] = 1
+    location_score_q = deque([(location,1)])
+    while(len(location_score_q)>0):
+        loc0, score = location_score_q.popleft()
+        score = score*cs0_decay
+        knight_move_v = get_knight_move_v(size_wh,loc0)
+        for knight_move in knight_move_v:
+            r, c = knight_move
+            if ret[r][c] != 0:
+                continue
+            ret[r][c] = score
+            location_score_q.append(knight_move,score)
+    return ret
+
+@functools.lru_cache(maxsize=None)
+get_knight_move_v(size_wh,location):
+    w, h = size_wh
+    r, c = location
+    ret = []
+    for knight in knight_v:
+        rr, cc = knight
+        rr += r
+        cc += c
+        if r<0:
+            continue
+        if r>=h:
+            continue
+        if c<0:
+            continue
+        if c>=w:
+            continue
+        ret.append((rr,cc))
+    return ret
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
