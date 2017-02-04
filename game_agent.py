@@ -46,7 +46,7 @@ def custom_score(game, player):
     return custom_score_0(game, player)
 
 
-knight_v=[(-1,-2),(1,-2),(-1,2),(1,2),(-2,-1),(2,-1),(-2,1),(2,1)]
+knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
 
 def custom_score_0(game, player):
     p0 = player
