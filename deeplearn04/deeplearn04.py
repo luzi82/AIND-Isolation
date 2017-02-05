@@ -98,7 +98,6 @@ def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
     mid = q_value
 #     mid = mid + random_t
     mid = mid + (1 - mask) * 100
-    score = mid
     mid = mid - tf.reduce_min(mid)
     mid = mid * mask
     mid = mid + mask * 0.00001
@@ -122,7 +121,9 @@ def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
     mid = tf.argmax(good0, dimension=1)
     train_choice = mid
 
-    mid = score
+    mid = q_value
+    mid = mid + (1 - mask) * -100
+    score = mid
     mid = mid + random_t
     mid = tf.argmax(mid, dimension=1)
     cal_choice = mid
