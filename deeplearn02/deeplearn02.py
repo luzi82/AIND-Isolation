@@ -252,7 +252,7 @@ class DeepLearn(object):
             logging.debug("EECSQBUX push_train_dict: "+json.dumps(train_dict))
         with self.lock:
             if self.push_idx >= self.arg_dict['train_memory']:
-                logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
+#                 logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
                 return
             for k, v in self.queue.items():
                 v[self.push_idx] = train_dict[k]
@@ -333,7 +333,7 @@ class DLPlayer(object):
 
                 self.dl.push_train_dict(train_dict)
 
-            self.dl.do_train()
+#             self.dl.do_train()
 
             ret_move = random.choice(legal_moves)
         else:
@@ -395,6 +395,19 @@ class DLPlayer(object):
     def close(self):
         self.dl.close()
 
+
+class WhileTruePlay (threading.Thread):
+
+    def __init__(self,player1,player2):
+        threading.Thread.__init__(self)
+        self.player1 = player1
+        self.player2 = player2
+        self.loop = True
+
+    def run(self):
+        while(self.loop):
+            game = isolation.isolation.Board(self.player1,self.player2)
+            game.play(time_limit=999999)
 
 def main(_):
     argparser = argparse.ArgumentParser()
@@ -488,11 +501,19 @@ def main(_):
     player1 = DLPlayer(dl)
     player2 = DLPlayer(dl)
 
-    with tf.device(arg_dict['device']):
-        while(True):
-            game = isolation.isolation.Board(player1,player2)
-            game.play(time_limit=999999)
+    wtp = WhileTruePlay(player1,player2)
+    wtp.start()
 
+    with tf.device(arg_dict['device']):
+        try:
+            while(True):
+                dl.do_train()
+        except(KeyboardInterrupt):
+            if logging.getLogger().isEnabledFor(logging.INFO):
+                logging.info('SBBAZUAI KeyboardInterrupt')
+
+    wtp.loop = False
+    wtp.join()
 
 if __name__ == '__main__':
     log_filename = os.path.join('log','{}-{}-deeplearn.log'.format(str(int(time.time())),MY_NAME))
