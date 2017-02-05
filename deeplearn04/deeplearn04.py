@@ -316,18 +316,18 @@ class DLPlayer(object):
 
         if len(legal_moves)<=8:
 
-            state_0 = self.get_state(game)
+            state_0 = get_state(game)
             for move in legal_moves:
-                choice_0 = self.rc_to_idx(game,move)
+                choice_0 = rc_to_idx(game,move)
                 game_1 = game.forecast_move(move)
                 
                 train_dict={}
                 train_dict['state_0']       = state_0
                 train_dict['choice_0']      = choice_0
-                train_dict['state_1']       = self.get_state(game_1)
-                train_dict['choice_mask_1'] = self.get_choice_mask(game_1)
-                train_dict['reward_1']      = self.get_reward(game_1)
-                train_dict['cont_1']        = self.get_cont(game_1)
+                train_dict['state_1']       = get_state(game_1)
+                train_dict['choice_mask_1'] = get_choice_mask(game_1)
+                train_dict['reward_1']      = get_reward(game_1)
+                train_dict['cont_1']        = get_cont(game_1)
 
                 self.dl.push_train_dict(train_dict)
 
@@ -344,55 +344,64 @@ class DLPlayer(object):
             raise Exception('CZQAZCWH ret_move not in legal_moves')
         return ret_move
 
-    def rc_to_idx(self,game,rc):
-        r, c = rc
-        ar, ac = game.get_player_location(game.active_player)
-        dr, dc = (r-ar, c-ac)
-        idx = KNIGHT_RC2IDX_D.get((dr,dc))
-        return idx
-
-    def idx_to_rc(self,game,idx):
-        dr, dc = KNIGHT_IDX2RC_V[idx]
-        ar, ac = game.get_player_location(game.active_player)
-        rc = (ar+dr, ac+dc)
-        return rc
-
-    def get_state(self, game):
-        ret_state = np.zeros((3,7,7),dtype=np.float)
-        board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
-        np.copyto(ret_state[0], board_state_vv)
-        aloc = game.get_player_location(game.active_player)
-        if aloc != None:
-            active_r, active_c = aloc
-            ret_state[1][active_r][active_c] = 1.0
-        iloc = game.get_player_location(game.inactive_player)
-        if iloc != None:
-            inactive_r, inactive_c = iloc
-            ret_state[2][inactive_r][inactive_c] = 1.0
-        return ret_state.tolist()
-
-    def get_choice_mask(self, game):
-        legal_moves = game.get_legal_moves()
-        ret_vv = np.zeros(OUTPUT_COUNT,dtype=np.float)
-        for move in legal_moves:
-            ret_vv[self.rc_to_idx(game, move)] = 1.
-        return ret_vv.tolist()
-
-    def get_reward(self, game):
-        utility = game.utility(game.inactive_player) # reward of last mover
-        if utility > 0.001:
-            return REWARD_WIN
-        if utility < -0.001:
-            return REWARD_LOSE
-        return REWARD_STEP
-
-    def get_cont(self, game):
-        utility = game.utility(game.active_player)
-        return (utility < 0.001) and (utility > -0.001)
-
     def close(self):
         self.dl.close()
 
+
+def rc_to_idx(game,rc):
+    r, c = rc
+    ar, ac = game.get_player_location(game.active_player)
+    dr, dc = (r-ar, c-ac)
+    idx = KNIGHT_RC2IDX_D.get((dr,dc))
+    return idx
+
+def idx_to_rc(game,idx):
+    dr, dc = KNIGHT_IDX2RC_V[idx]
+    ar, ac = game.get_player_location(game.active_player)
+    rc = (ar+dr, ac+dc)
+    return rc
+
+def get_state(game):
+    ret_state = np.zeros((3,7,7),dtype=np.float)
+    board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
+    np.copyto(ret_state[0], board_state_vv)
+    aloc = game.get_player_location(game.active_player)
+    if aloc != None:
+        active_r, active_c = aloc
+        ret_state[1][active_r][active_c] = 1.0
+    iloc = game.get_player_location(game.inactive_player)
+    if iloc != None:
+        inactive_r, inactive_c = iloc
+        ret_state[2][inactive_r][inactive_c] = 1.0
+    return ret_state.tolist()
+
+def get_choice_mask(game):
+    legal_moves = game.get_legal_moves()
+    ret_vv = np.zeros(OUTPUT_COUNT,dtype=np.float)
+    for move in legal_moves:
+        ret_vv[rc_to_idx(game, move)] = 1.
+    return ret_vv.tolist()
+
+def get_reward(game):
+    utility = game.utility(game.inactive_player) # reward of last mover
+    if utility > 0.001:
+        return REWARD_WIN
+    if utility < -0.001:
+        return REWARD_LOSE
+    return REWARD_STEP
+
+def get_cont(game):
+    utility = game.utility(game.active_player)
+    return (utility < 0.001) and (utility > -0.001)
+
+
+# class Score(object):
+# 
+#     def __init__(self, dl):
+#         self.dl = dl
+# 
+#     def score(self, game, player):
+#         state = 
 
 def main(_):
     argparser = argparse.ArgumentParser()
