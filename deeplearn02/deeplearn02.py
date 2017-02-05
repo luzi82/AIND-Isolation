@@ -311,22 +311,25 @@ class DLPlayer(object):
         ret_move = None
 
         if len(legal_moves)<=8:
-            ret_move = random.choice(legal_moves)
-            
-            state_0 = self.get_state(game)
-            choice_0 = self.rc_to_idx(game,ret_move)
-            game_1 = game.forecast_move(ret_move)
-            
-            train_dict={}
-            train_dict['state_0']       = state_0
-            train_dict['choice_0']      = choice_0
-            train_dict['state_1']       = self.get_state(game_1)
-            train_dict['choice_mask_1'] = self.get_choice_mask(game_1)
-            train_dict['reward_1']      = self.get_reward(game_1)
-            train_dict['cont_1']        = self.get_cont(game_1)
 
-            self.dl.push_train_dict(train_dict)
+            state_0 = self.get_state(game)
+            for move in legal_moves:
+                choice_0 = self.rc_to_idx(game,move)
+                game_1 = game.forecast_move(move)
+                
+                train_dict={}
+                train_dict['state_0']       = state_0
+                train_dict['choice_0']      = choice_0
+                train_dict['state_1']       = self.get_state(game_1)
+                train_dict['choice_mask_1'] = self.get_choice_mask(game_1)
+                train_dict['reward_1']      = self.get_reward(game_1)
+                train_dict['cont_1']        = self.get_cont(game_1)
+
+                self.dl.push_train_dict(train_dict)
+
             self.dl.do_train()
+
+            ret_move = random.choice(legal_moves)
         else:
             ret_move = random.choice(legal_moves)
     
