@@ -11,6 +11,7 @@ import math
 import numpy as np
 import isolation.isolation
 import collections
+import threading
 
 MY_NAME = os.path.basename(os.path.dirname(__file__))
 
@@ -201,6 +202,8 @@ class DeepLearn(object):
         self.push_idx = 0
         self.push_var_idx = 0
 
+        self.lock = threading.Lock()
+
         if ('continue' in arg_dict) and (arg_dict['continue']):
             while os.path.isfile(os.path.join(os.path.join(arg_dict['output_path'],'sess','{}.index'.format(self.train_count+1000)))):
                 self.train_count += 1000
@@ -209,65 +212,68 @@ class DeepLearn(object):
     def load_sess(self,filename):
         self.saver.restore(self.sess, filename)
 
-    def cal_choice(self, state_0, mask, train_enable):
-        if train_enable:
-            #logging.debug("EAPDALXUMV mask: "+json.dumps(mask))
-            score, choice_0, weight = self.sess.run([self.score, self.train_choice, self.weight],feed_dict={self.choice_state:[state_0],self.mask:[mask]})
-            score = score[0].tolist()
-            weight = weight[0].tolist()
-            choice_0 = choice_0.tolist()[0]
-            if logging.getLogger().isEnabledFor(logging.DEBUG):
-                logging.debug("UBNHCJHT mask {}".format(json.dumps(mask)))
-                logging.debug("VJJDHFUI score {}".format(json.dumps(score)))
-                logging.debug("ALEGYXDQ weight {}".format(json.dumps(weight)))
-                logging.debug("FMUZWHSY choice {}".format(json.dumps(choice_0)))
-            return {
-                'state_0': state_0,
-                'choice_0': choice_0,
-                'state_1': None,
-                'choice_mask_1': None,
-                'cont': None,
-                'reward_1': None,
-            }, score[choice_0]
-        else:
-            score, choice_0 = self.sess.run([self.score, self.choice_cal],feed_dict={self.choice_state:[state_0],self.mask:[mask]})
-            score = score[0].tolist()
-            choice_0 = choice_0.tolist()[0]
-            if logging.getLogger().isEnabledFor(logging.DEBUG):
-                logging.debug("FCUFWSMO score {}, choice {}".format(json.dumps(score),choice_0))
-            return {
-                'state_0': state_0,
-                'choice_0': choice_0,
-                'state_1': None,
-                'choice_mask_1': None,
-                'cont': None,
-                'reward_1': None,
-            }, score[choice_0]
-            
+#     def cal_choice(self, state_0, mask, train_enable):
+#         if train_enable:
+#             #logging.debug("EAPDALXUMV mask: "+json.dumps(mask))
+#             score, choice_0, weight = self.sess.run([self.score, self.train_choice, self.weight],feed_dict={self.choice_state:[state_0],self.mask:[mask]})
+#             score = score[0].tolist()
+#             weight = weight[0].tolist()
+#             choice_0 = choice_0.tolist()[0]
+#             if logging.getLogger().isEnabledFor(logging.DEBUG):
+#                 logging.debug("UBNHCJHT mask {}".format(json.dumps(mask)))
+#                 logging.debug("VJJDHFUI score {}".format(json.dumps(score)))
+#                 logging.debug("ALEGYXDQ weight {}".format(json.dumps(weight)))
+#                 logging.debug("FMUZWHSY choice {}".format(json.dumps(choice_0)))
+#             return {
+#                 'state_0': state_0,
+#                 'choice_0': choice_0,
+#                 'state_1': None,
+#                 'choice_mask_1': None,
+#                 'cont': None,
+#                 'reward_1': None,
+#             }, score[choice_0]
+#         else:
+#             score, choice_0 = self.sess.run([self.score, self.choice_cal],feed_dict={self.choice_state:[state_0],self.mask:[mask]})
+#             score = score[0].tolist()
+#             choice_0 = choice_0.tolist()[0]
+#             if logging.getLogger().isEnabledFor(logging.DEBUG):
+#                 logging.debug("FCUFWSMO score {}, choice {}".format(json.dumps(score),choice_0))
+#             return {
+#                 'state_0': state_0,
+#                 'choice_0': choice_0,
+#                 'state_1': None,
+#                 'choice_mask_1': None,
+#                 'cont': None,
+#                 'reward_1': None,
+#             }, score[choice_0]
 
     def push_train_dict(self, train_dict):
         if logging.getLogger().isEnabledFor(logging.DEBUG):
             logging.debug("EECSQBUX push_train_dict: "+json.dumps(train_dict))
-        if self.push_idx >= self.arg_dict['train_memory']:
-            logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
-            return
-        for k, v in self.queue.items():
-            v[self.push_idx] = train_dict[k]
-        self.push_idx += 1
+        with self.lock:
+            if self.push_idx >= self.arg_dict['train_memory']:
+                logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
+                return
+            for k, v in self.queue.items():
+                v[self.push_idx] = train_dict[k]
+            self.push_idx += 1
 
     def do_train(self):
-        if self.push_idx > 0:
-            feed_dict = {}
-            for k in self.sample_var_dict:
-                feed_dict[self.sample_input_ph_dict[k]] = self.queue[k][0:self.push_idx]
-            indices = list(range(self.push_var_idx,self.push_var_idx+self.push_idx))
-            indices = [i%self.arg_dict['train_memory'] for i in indices]
-            feed_dict[self.push_indices] = indices
+        feed_dict = None
+        with self.lock:
+            if self.push_idx > 0:
+                feed_dict = {}
+                for k in self.sample_var_dict:
+                    feed_dict[self.sample_input_ph_dict[k]] = copy.copy(self.queue[k][0:self.push_idx])
+                indices = list(range(self.push_var_idx,self.push_var_idx+self.push_idx))
+                indices = [i%self.arg_dict['train_memory'] for i in indices]
+                feed_dict[self.push_indices] = indices
+                self.push_done += self.push_idx
+                self.push_var_idx += self.push_idx
+                self.push_var_idx %= self.arg_dict['train_memory']
+                self.push_idx = 0
+        if feed_dict != None:
             self.sess.run(self.push_train_sample_var_list,feed_dict=feed_dict)
-            self.push_done += self.push_idx
-            self.push_var_idx += self.push_idx
-            self.push_var_idx %= self.arg_dict['train_memory']
-            self.push_idx = 0
         if self.push_done < self.arg_dict['train_memory']:
             return
         _, loss, score_diff = self.sess.run([self.train,self.loss,self.score_diff])
