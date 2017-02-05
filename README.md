@@ -68,7 +68,7 @@ The `tournament.py` script will run a round-robin tournament between your Custom
     # change aind to aindtf
     
     PATH="${HOME}/anaconda3/bin:${PATH}"
-    conda env create -f aindtf-environment-unix.yml
+    conda env create -f ~/project/nd889/download/aindtf-environment-unix.yml
     
     source activate aindtf
     pip install ~/project/nd889/download/tensorflow_gpu-0.12.1-cp36-cp36m-linux_x86_64.whl
