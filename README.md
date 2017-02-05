@@ -53,3 +53,22 @@ The `agent_test.py` script contains unittest test cases to evaluate your impleme
 ### Tournament
 
 The `tournament.py` script will run a round-robin tournament between your CustomPlayer agent with itertive deepening and your custom heuristic function against several calibrated agent configurations using fixed-depth minimax and alpha-beta search with the example heuristics provided in `sample_players.py`.
+
+
+## Anaconda python 3.6 and Tensorflow
+
+    cd ~/project/nd889/download
+    wget https://d17h27t6h515a5.cloudfront.net/topher/2017/January/588297be_aind-environment-unix/aind-environment-unix.yml
+    wget https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-0.12.1-cp35-cp35m-linux_x86_64.whl
+    
+    cp ~/project/nd889/download/tensorflow_gpu-0.12.1-cp35-cp35m-linux_x86_64.whl ~/project/nd889/download/tensorflow_gpu-0.12.1-cp36-cp36m-linux_x86_64.whl
+    cp ~/project/nd889/download/aind-environment-unix.yml ~/project/nd889/download/aindtf-environment-unix.yml
+    
+    nano ~/project/nd889/download/aindtf-environment-unix.yml
+    # change aind to aindtf
+    
+    PATH="${HOME}/anaconda3/bin:${PATH}"
+    conda env create -f aindtf-environment-unix.yml
+    
+    source activate aindtf
+    pip install ~/project/nd889/download/tensorflow_gpu-0.12.1-cp36-cp36m-linux_x86_64.whl
