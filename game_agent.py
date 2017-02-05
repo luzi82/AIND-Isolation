@@ -12,6 +12,7 @@ import numpy as np
 from collections import deque
 import functools
 import isolation.isolation
+import deeplearn04.deeplearn04 as dl
 
 
 class Timeout(Exception):
@@ -78,6 +79,28 @@ def get_cs0_board_score_vv_dict(size_wh,location):
             ret[r][c] = score
             location_score_q.append((knight_move,score))
     return ret
+
+
+def custom_score_1(game, player):
+    dlscore = get_cs1_dlscore()
+    return dlscore.score(game, player)
+
+cs1_dlscore = None
+
+def get_cs1_dlscore():
+    global cs1_dlscore
+    if cs1_dlscore == None:
+        arg_dict = {}
+        arg_dict['output_path'] = None
+        arg_dict['random_stddev'] = 0.1
+        arg_dict['random_move_chance'] = 0.
+        arg_dict['train_beta'] = 0.99
+        arg_dict['continue'] = False
+        arg_dict['train_memory'] = 10
+        dll = dl.DeepLearn(arg_dict)
+        dll.load_sess('tensorflow_resource/dl04-100000')
+        cs1_dlscore = dl.Score(dll)
+    return cs1_dlscore
 
 @functools.lru_cache(maxsize=None)
 def get_knight_move_v(size_wh,location):

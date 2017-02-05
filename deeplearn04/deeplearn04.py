@@ -94,10 +94,11 @@ def get_q(state_ph,var_dict):
     return mid
 
 def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
-    score = get_q(state_ph,var_dict)
-    mid = score
+    q_value = get_q(state_ph,var_dict)
+    mid = q_value
 #     mid = mid + random_t
-    mid = mid + (1 - mask) * 10
+    mid = mid + (1 - mask) * 100
+    score = mid
     mid = mid - tf.reduce_min(mid)
     mid = mid * mask
     mid = mid + mask * 0.00001
@@ -123,10 +124,6 @@ def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
 
     mid = score
     mid = mid + random_t
-    mid = mid - tf.reduce_min(mid)
-    #mid = tf.exp(mid)
-    mid = mid * mask
-    mid = mid + mask
     mid = tf.argmax(mid, dimension=1)
     cal_choice = mid
 
@@ -202,7 +199,7 @@ class DeepLearn(object):
         self.push_idx = 0
         self.push_var_idx = 0
 
-#         self.lock = threading.Lock()
+        self.max_score = tf.reduce_max(self.score)
 
         if ('continue' in arg_dict) and (arg_dict['continue']):
             while os.path.isfile(os.path.join(os.path.join(arg_dict['output_path'],'sess','{}.index'.format(self.train_count+1000)))):
@@ -246,6 +243,10 @@ class DeepLearn(object):
 #                 'cont': None,
 #                 'reward_1': None,
 #             }, score[choice_0]
+
+    def cal_score(self, state, choice_mask):
+        score = self.sess.run(self.max_score,feed_dict={self.choice_state:[state],self.mask:[choice_mask]})
+        return score
 
     def push_train_dict(self, train_dict):
         if logging.getLogger().isEnabledFor(logging.DEBUG):
@@ -395,13 +396,20 @@ def get_cont(game):
     return (utility < 0.001) and (utility > -0.001)
 
 
-# class Score(object):
-# 
-#     def __init__(self, dl):
-#         self.dl = dl
-# 
-#     def score(self, game, player):
-#         state = 
+class Score(object):
+ 
+    def __init__(self, dl):
+        self.dl = dl
+ 
+    def score(self, game, player):
+        state = get_state(game)
+        choice_mask = get_choice_mask(game)
+        score = self.dl.cal_score(state, choice_mask)
+        factor = 1 if player == game.active_player else -1
+        return factor * score
+
+    def close(self):
+        self.dl.close()
 
 def main(_):
     argparser = argparse.ArgumentParser()
@@ -431,12 +439,12 @@ def main(_):
         help='TRAIN_BETA',
         default=0.99
     )
-    argparser.add_argument(
-        '--turn_count',
-        type=int,
-        help='turn_count',
-        default=None
-    )
+#     argparser.add_argument(
+#         '--turn_count',
+#         type=int,
+#         help='turn_count',
+#         default=None
+#     )
     argparser.add_argument(
         '--device',
         type=str,
