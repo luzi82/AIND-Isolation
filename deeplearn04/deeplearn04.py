@@ -123,6 +123,8 @@ def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
 
     mid = q_value
     mid = mid + (1 - mask) * -100
+    mid = tf.maximum(mid, -1)
+    mid = tf.minimum(mid, 1)
     score = mid
 
     mid = score
