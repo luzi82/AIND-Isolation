@@ -103,7 +103,7 @@ def get_cs1_dlscore():
         arg_dict['train_memory'] = 10
         dll = dl.DeepLearn(arg_dict)
 #        dll.load_sess('tensorflow_resource/dl04-100000')
-        dll.load_sess('tensorflow_resource/732000')
+        dll.load_sess('tensorflow_resource/dl04-732000')
         cs1_dlscore = dl.Score(dll)
     return cs1_dlscore
 

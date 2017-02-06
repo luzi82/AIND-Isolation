@@ -67,18 +67,37 @@ Your project is ready for submission when it meets all requirements of the proje
 
 ## Anaconda python 3.6 and Tensorflow
 
+### TensorFlow GPU
+
+    mkdir -p ~/project/nd889/download
     cd ~/project/nd889/download
     wget https://d17h27t6h515a5.cloudfront.net/topher/2017/January/588297be_aind-environment-unix/aind-environment-unix.yml
     wget https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-0.12.1-cp35-cp35m-linux_x86_64.whl
     
-    cp ~/project/nd889/download/tensorflow_gpu-0.12.1-cp35-cp35m-linux_x86_64.whl ~/project/nd889/download/tensorflow_gpu-0.12.1-cp36-cp36m-linux_x86_64.whl
     cp ~/project/nd889/download/aind-environment-unix.yml ~/project/nd889/download/aindtf-environment-unix.yml
+    cp ~/project/nd889/download/tensorflow_gpu-0.12.1-cp35-cp35m-linux_x86_64.whl ~/project/nd889/download/tensorflow_gpu-0.12.1-cp36-cp36m-linux_x86_64.whl
     
-    nano ~/project/nd889/download/aindtf-environment-unix.yml
-    # change aind to aindtf
+    sed -i -e 's/name: aind/name: aindtf/g' ~/project/nd889/download/aindtf-environment-unix.yml
     
     PATH="${HOME}/anaconda3/bin:${PATH}"
     conda env create -f ~/project/nd889/download/aindtf-environment-unix.yml
     
     source activate aindtf
     pip install ~/project/nd889/download/tensorflow_gpu-0.12.1-cp36-cp36m-linux_x86_64.whl
+
+### TensorFlow CPU
+
+    mkdir -p ~/project/nd889/download
+    cd ~/project/nd889/download
+    wget https://d17h27t6h515a5.cloudfront.net/topher/2017/January/588297be_aind-environment-unix/aind-environment-unix.yml
+    
+    cp ~/project/nd889/download/aind-environment-unix.yml ~/project/nd889/download/aindtf-environment-unix.yml
+    
+    sed -i -e 's/name: aind/name: aindtf/g' ~/project/nd889/download/aindtf-environment-unix.yml
+    
+    PATH="${HOME}/anaconda3/bin:${PATH}"
+    conda env create -f ~/project/nd889/download/aindtf-environment-unix.yml
+    
+    source activate aindtf
+    pip install tensorflow
+    
