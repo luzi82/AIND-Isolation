@@ -24,6 +24,9 @@ def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
 
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
+
     Parameters
     ----------
     game : `isolation.Board`
@@ -35,7 +38,7 @@ def custom_score(game, player):
         one of the player objects `game.__player_1__` or `game.__player_2__`.)
 
     Returns
-    ----------
+    -------
     float
         The heuristic value of the current game state to the specified player.
     """
@@ -44,7 +47,8 @@ def custom_score(game, player):
     if utility < -0.0001 or utility > 0.0001:
         return utility
 
-    return custom_score_0(game, player)
+#    return custom_score_0(game, player)
+    return custom_score_1(game, player)
 
 
 knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
@@ -98,7 +102,8 @@ def get_cs1_dlscore():
         arg_dict['continue'] = False
         arg_dict['train_memory'] = 10
         dll = dl.DeepLearn(arg_dict)
-        dll.load_sess('tensorflow_resource/dl04-100000')
+#        dll.load_sess('tensorflow_resource/dl04-100000')
+        dll.load_sess('tensorflow_resource/dl04-732000')
         cs1_dlscore = dl.Score(dll)
     return cs1_dlscore
 
@@ -193,7 +198,7 @@ class CustomPlayer:
             the game.
 
         Returns
-        ----------
+        -------
         (int, int)
             Board coordinates corresponding to a legal move; may return
             (-1, -1) if there are no available legal moves.
@@ -210,6 +215,7 @@ class CustomPlayer:
         search_depth = self.search_depth if (self.search_depth >= 0) else game.width*game.height + 1
 
         ret = (-1,-1)
+        max_level = -1
         try:
             # The search method call (alpha beta or minimax) should happen in
             # here in order to avoid timeout. The try/except block will
@@ -218,12 +224,16 @@ class CustomPlayer:
             if self.iterative:
                 for i in range(search_depth):
                     _, ret = self.search_fn(game, i+1, legal_moves=legal_moves)
+                    max_level = i
             else:
                 _, ret = self.search_fn(game, search_depth, legal_moves=legal_moves)
 
         except Timeout:
             # Handle any actions required at timeout, if necessary
             pass
+
+#        if self.iterative:
+#            print('max_level {}'.format(max_level))
 
         return ret
 
@@ -245,12 +255,18 @@ class CustomPlayer:
             maximizing layer (True) or a minimizing layer (False)
 
         Returns
-        ----------
+        -------
         float
             The score for the current search branch
 
         tuple(int, int)
             The best move for the current branch; (-1, -1) for no legal moves
+
+        Notes
+        -----
+            (1) You MUST use the `self.score()` method for board evaluation
+                to pass the project unit tests; you cannot call any other
+                evaluation function directly.
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
@@ -302,12 +318,18 @@ class CustomPlayer:
             maximizing layer (True) or a minimizing layer (False)
 
         Returns
-        ----------
+        -------
         float
             The score for the current search branch
 
         tuple(int, int)
             The best move for the current branch; (-1, -1) for no legal moves
+
+        Notes
+        -----
+            (1) You MUST use the `self.score()` method for board evaluation
+                to pass the project unit tests; you cannot call any other
+                evaluation function directly.
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()

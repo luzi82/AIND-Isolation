@@ -75,6 +75,13 @@ def get_push_train_sample_var_list(sample_var_dict, train_input_ph_dict, push_in
         ret.append(push_op)
     return ret
 
+def get_fill_train_sample_var_list(sample_var_dict, train_input_ph_dict):
+    ret = []
+    for k in train_input_ph_dict:
+        push_op = tf.assign(sample_var_dict[k], train_input_ph_dict[k])
+        ret.append(push_op)
+    return ret
+
 def get_q(state_ph,var_dict):
     mid = state_ph
     mid = tf.reshape(mid, [-1,147])
@@ -123,8 +130,6 @@ def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
 
     mid = q_value
     mid = mid + (1 - mask) * -100
-    mid = tf.maximum(mid, -1)
-    mid = tf.minimum(mid, 1)
     score = mid
 
     mid = score
@@ -134,7 +139,7 @@ def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
 
     return score, weight, train_choice, cal_choice
 
-# TRAIN_BETA = 0.99
+TRAIN_BETA = 0.99
 # ELEMENT_L2_FACTOR = 10.0
 # L2_WEIGHT = 0.1
 
@@ -148,7 +153,7 @@ def get_train(sample_var_dict,var_dict,arg_dict):
     mid1 = mid1 + tf.constant(-100., dtype=tf.float32) * ( tf.constant(1., dtype=tf.float32) - sample_var_dict['choice_mask_1'] )
     mid1 = tf.reduce_max(mid1, reduction_indices=[1])  
     mid1 = mid1 * sample_var_dict['cont_1']
-    mid1 = mid1 * tf.constant(arg_dict['train_beta'])
+    mid1 = mid1 * tf.constant(TRAIN_BETA)
 
     mid = mid0+mid1-sample_var_dict['reward_1']
     mid = tf.abs(mid)
@@ -190,6 +195,7 @@ class DeepLearn(object):
         self.sample_input_ph_dict = new_sample_input_ph_dict()
         self.sample_var_dict = new_sample_var_dict(self.arg_dict)
         self.push_train_sample_var_list = get_push_train_sample_var_list(self.sample_var_dict, self.sample_input_ph_dict, self.push_indices)
+        self.fill_train_sample_var_list = get_fill_train_sample_var_list(self.sample_var_dict, self.sample_input_ph_dict)
         self.train, self.loss, self.score_diff = get_train(self.sample_var_dict,self.var_dict,self.arg_dict)
 
         self.sess = tf.Session()
@@ -249,6 +255,14 @@ class DeepLearn(object):
 #                 'reward_1': None,
 #             }, score[choice_0]
 
+    def cal_train_choice(self, state_0, mask):
+        #logging.debug("EAPDALXUMV mask: "+json.dumps(mask))
+        choice_0 = self.sess.run(self.train_choice,feed_dict={self.choice_state:[state_0],self.mask:[mask]})
+        choice_0 = choice_0.tolist()[0]
+        if logging.getLogger().isEnabledFor(logging.DEBUG):
+            logging.debug("FMUZWHSY choice {}".format(choice_0))
+        return choice_0
+
     def cal_score(self, state, choice_mask):
         score = self.sess.run(self.max_score,feed_dict={self.choice_state:[state],self.mask:[choice_mask]})
         return score
@@ -261,7 +275,7 @@ class DeepLearn(object):
         if logging.getLogger().isEnabledFor(logging.DEBUG):
             logging.debug("EECSQBUX push_train_dict: "+json.dumps(train_dict))
         if self.push_idx >= self.arg_dict['train_memory']:
-#                 logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
+            logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
             return
         for k, v in self.queue.items():
             v[self.push_idx] = train_dict[k]
@@ -269,10 +283,22 @@ class DeepLearn(object):
 
     def do_train(self):
         feed_dict = None
+        if self.push_done == 0:
+            if self.push_idx < self.arg_dict['train_memory']:
+                return
+            feed_dict = {}
+            for k in self.sample_input_ph_dict:
+                feed_dict[self.sample_input_ph_dict[k]] = self.queue[k]
+            self.sess.run(self.fill_train_sample_var_list,feed_dict=feed_dict)
+            self.push_done += self.push_idx
+            self.push_var_idx += self.push_idx
+            self.push_var_idx %= self.arg_dict['train_memory']
+            self.push_idx = 0
+            feed_dict = None
         if self.push_idx > 0:
             feed_dict = {}
-            for k in self.sample_var_dict:
-                feed_dict[self.sample_input_ph_dict[k]] = copy.copy(self.queue[k][0:self.push_idx])
+            for k in self.sample_input_ph_dict:
+                feed_dict[self.sample_input_ph_dict[k]] = self.queue[k][0:self.push_idx]
             indices = list(range(self.push_var_idx,self.push_var_idx+self.push_idx))
             indices = [i%self.arg_dict['train_memory'] for i in indices]
             feed_dict[self.push_indices] = indices
@@ -282,6 +308,7 @@ class DeepLearn(object):
             self.push_idx = 0
         if feed_dict != None:
             self.sess.run(self.push_train_sample_var_list,feed_dict=feed_dict)
+            feed_dict = None
         if self.push_done < self.arg_dict['train_memory']:
             return
         _, loss, score_diff = self.sess.run([self.train,self.loss,self.score_diff])
@@ -305,7 +332,7 @@ class DeepLearn(object):
 REWARD_WIN = 1.
 REWARD_LOSE = -1.
 REWARD_DRAW = 0.
-REWARD_STEP = -0.05
+REWARD_STEP_FACTOR = -0.2
 
 KNIGHT_IDX2RC_V=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
 KNIGHT_RC2IDX_D={}
@@ -343,7 +370,10 @@ class DLPlayer(object):
 
             self.dl.do_train()
 
-            ret_move = random.choice(legal_moves)
+            mask_0 = get_choice_mask(game)
+
+            choice = self.dl.cal_train_choice(state_0, mask_0)
+            ret_move = idx_to_rc(game, choice)
         else:
             ret_move = random.choice(legal_moves)
     
@@ -398,7 +428,7 @@ def get_reward(game):
         return REWARD_WIN
     if utility < -0.001:
         return REWARD_LOSE
-    return REWARD_STEP
+    return REWARD_STEP_FACTOR*(1-TRAIN_BETA)
 
 def get_cont(game):
     utility = game.utility(game.active_player)
@@ -449,12 +479,12 @@ def main(_):
         help='RANDOM_MOVE_CHANCE',
         default=0.05
     )
-    argparser.add_argument(
-        '--train_beta',
-        type=float,
-        help='TRAIN_BETA',
-        default=0.99
-    )
+#     argparser.add_argument(
+#         '--train_beta',
+#         type=float,
+#         help='TRAIN_BETA',
+#         default=0.99
+#     )
 #     argparser.add_argument(
 #         '--turn_count',
 #         type=int,
