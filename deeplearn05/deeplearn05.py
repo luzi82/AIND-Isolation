@@ -75,6 +75,13 @@ def get_push_train_sample_var_list(sample_var_dict, train_input_ph_dict, push_in
         ret.append(push_op)
     return ret
 
+def get_fill_train_sample_var_list(sample_var_dict, train_input_ph_dict):
+    ret = []
+    for k in train_input_ph_dict:
+        push_op = tf.assign(sample_var_dict[k], train_input_ph_dict[k])
+        ret.append(push_op)
+    return ret
+
 def get_q(state_ph,var_dict):
     mid = state_ph
     mid = tf.reshape(mid, [-1,147])
@@ -188,6 +195,7 @@ class DeepLearn(object):
         self.sample_input_ph_dict = new_sample_input_ph_dict()
         self.sample_var_dict = new_sample_var_dict(self.arg_dict)
         self.push_train_sample_var_list = get_push_train_sample_var_list(self.sample_var_dict, self.sample_input_ph_dict, self.push_indices)
+        self.fill_train_sample_var_list = get_fill_train_sample_var_list(self.sample_var_dict, self.sample_input_ph_dict)
         self.train, self.loss, self.score_diff = get_train(self.sample_var_dict,self.var_dict,self.arg_dict)
 
         self.sess = tf.Session()
@@ -267,7 +275,7 @@ class DeepLearn(object):
         if logging.getLogger().isEnabledFor(logging.DEBUG):
             logging.debug("EECSQBUX push_train_dict: "+json.dumps(train_dict))
         if self.push_idx >= self.arg_dict['train_memory']:
-#                 logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
+            logging.warn('SKXGEZAE self.push_idx >= self.arg_dict["train_memory"]')
             return
         for k, v in self.queue.items():
             v[self.push_idx] = train_dict[k]
@@ -275,10 +283,22 @@ class DeepLearn(object):
 
     def do_train(self):
         feed_dict = None
+        if self.push_done == 0:
+            if self.push_idx < self.arg_dict['train_memory']:
+                return
+            feed_dict = {}
+            for k in self.sample_input_ph_dict:
+                feed_dict[self.sample_input_ph_dict[k]] = self.queue[k]
+            self.sess.run(self.fill_train_sample_var_list,feed_dict=feed_dict)
+            self.push_done += self.push_idx
+            self.push_var_idx += self.push_idx
+            self.push_var_idx %= self.arg_dict['train_memory']
+            self.push_idx = 0
+            feed_dict = None
         if self.push_idx > 0:
             feed_dict = {}
-            for k in self.sample_var_dict:
-                feed_dict[self.sample_input_ph_dict[k]] = copy.copy(self.queue[k][0:self.push_idx])
+            for k in self.sample_input_ph_dict:
+                feed_dict[self.sample_input_ph_dict[k]] = self.queue[k][0:self.push_idx]
             indices = list(range(self.push_var_idx,self.push_var_idx+self.push_idx))
             indices = [i%self.arg_dict['train_memory'] for i in indices]
             feed_dict[self.push_indices] = indices
@@ -288,6 +308,7 @@ class DeepLearn(object):
             self.push_idx = 0
         if feed_dict != None:
             self.sess.run(self.push_train_sample_var_list,feed_dict=feed_dict)
+            feed_dict = None
         if self.push_done < self.arg_dict['train_memory']:
             return
         _, loss, score_diff = self.sess.run([self.train,self.loss,self.score_diff])
