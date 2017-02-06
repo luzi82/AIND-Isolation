@@ -247,6 +247,14 @@ class DeepLearn(object):
 #                 'reward_1': None,
 #             }, score[choice_0]
 
+    def cal_train_choice(self, state_0, mask):
+        #logging.debug("EAPDALXUMV mask: "+json.dumps(mask))
+        choice_0 = self.sess.run(self.train_choice,feed_dict={self.choice_state:[state_0],self.mask:[mask]})
+        choice_0 = choice_0.tolist()[0]
+        if logging.getLogger().isEnabledFor(logging.DEBUG):
+            logging.debug("FMUZWHSY choice {}".format(choice_0))
+        return choice_0
+
     def cal_score(self, state, choice_mask):
         score = self.sess.run(self.max_score,feed_dict={self.choice_state:[state],self.mask:[choice_mask]})
         return score
@@ -341,7 +349,10 @@ class DLPlayer(object):
 
             self.dl.do_train()
 
-            ret_move = random.choice(legal_moves)
+            mask_0 = get_choice_mask(game)
+
+            choice = self.dl.cal_train_choice(state_0, mask_0)
+            ret_move = idx_to_rc(game, choice)
         else:
             ret_move = random.choice(legal_moves)
     
