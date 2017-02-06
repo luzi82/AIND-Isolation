@@ -2,6 +2,45 @@ import isolation.isolation
 import deeplearn04.deeplearn04 as dl
 import numpy as np
 import json
+import game_agent
+
+
+def to_string(game):
+    """Generate a string representation of the current game state, marking
+    the location of each player and indicating which cells have been
+    blocked, and which remain open.
+    """
+
+    p1_loc = game.__last_player_move__[game.__player_1__]
+    p2_loc = game.__last_player_move__[game.__player_2__]
+
+    out = ''
+    
+    move_list = game.get_legal_moves()
+    if len(move_list) > 8:
+        move_list = []
+    move_dict = {move_list[i]:i for i in range(len(move_list))}
+
+    for i in range(game.height):
+        out += ' | '
+
+        for j in range(game.width):
+
+            if (i,j) in move_list:
+                out += str(move_dict[(i,j)])
+            elif not game.__board_state__[i][j]:
+                out += ' '
+            elif p1_loc and i == p1_loc[0] and j == p1_loc[1]:
+                out += 'A'
+            elif p2_loc and i == p2_loc[0] and j == p2_loc[1]:
+                out += 'B'
+            else:
+                out += '-'
+
+            out += ' | '
+        out += '\n\r'
+
+    return out
 
 
 class HumanDLPlayer():
@@ -45,7 +84,7 @@ class HumanDLPlayer():
         if not legal_moves:
             return (-1, -1)
 
-        print(game.to_string())
+        print(to_string(game))
 
 #         dl_state = dl.get_state(game)
 #         dl_state = np.reshape(dl_state,(3,7,7))
@@ -53,13 +92,32 @@ class HumanDLPlayer():
 
         score_list = None
         if len(legal_moves) <= 8:
-            print('score')
+#             print('score')
             score_list = self.dlscore.score_list(game,self)[0].tolist()
-            print('\n'.join(['%d %s %f'%(i, str(dl.idx_to_rc(game,i)), score_list[i]) for i in range(len(score_list))]))
-            print('choice')
-            print(('\n'.join(['[%d] %s %d %f' % (i, str(move), dl.rc_to_idx(game,move), score_list[dl.rc_to_idx(game,move)]) for i, move in enumerate(legal_moves)])))
+            score0_dict = {}
+            score1_dict = {}
+            score2_dict = {}
+            for move in legal_moves:
+                score0 = score_list[dl.rc_to_idx(game,move)]
+                score0_dict[move] = score0
+                game_1 = game.forecast_move(move)
+                score1 = self.dlscore.score(game_1,self)
+                score1_dict[move] = score1
+                score2 = game_agent.custom_score_0(game_1,self)
+                score2_dict[move] = score2
+#             print('\n'.join(['%d %s %f'%(i, str(dl.idx_to_rc(game,i)), score_list[i]) for i in range(len(score_list))]))
+            print(('\n'.join(['[%d] %s %d %f %f %f' % (i, str(move), dl.rc_to_idx(game,move), score0_dict[move], score1_dict[move], score2_dict[move]) for i, move in enumerate(legal_moves)])))
+        elif len(legal_moves) == 48:
+            score_dict = {}
+            score1_dict = {}
+            for move in legal_moves:
+                game_1 = game.forecast_move(move)
+                score = self.dlscore.score(game_1,self)
+                score_dict[move] = score
+                score1 = game_agent.custom_score_0(game_1,self)
+                score1_dict[move] = score1
+            print(('\n'.join(['[%d] %s %f %f' % (i, str(move), score_dict[move], score1_dict[move]) for i, move in enumerate(legal_moves)])))
         else:
-            print('choice')
             print(('\n'.join(['[%d] %s' % (i, str(move)) for i, move in enumerate(legal_moves)])))
 
         valid_choice = False
