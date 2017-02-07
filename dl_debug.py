@@ -1,5 +1,5 @@
 import isolation.isolation
-import deeplearn04.deeplearn04 as dl
+import deeplearn07.deeplearn07 as dl
 import numpy as np
 import json
 import game_agent
@@ -144,7 +144,9 @@ if __name__ == '__main__':
     arg_dict['train_memory'] = 10
     dll = dl.DeepLearn(arg_dict)
 #        dll.load_sess('tensorflow_resource/dl04-100000')
-    dll.load_sess('tensorflow_resource/dl04-732000')
+#     dll.load_sess('tensorflow_resource/dl05-768000')
+#     dll.load_sess('tensorflow_resource/dl06-1736000')
+    dll.load_sess('tensorflow_resource/dl07-70000')
     dlscore = dl.Score(dll)
     
     player1 = HumanDLPlayer(dlscore)

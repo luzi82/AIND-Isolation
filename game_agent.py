@@ -12,7 +12,6 @@ import numpy as np
 from collections import deque
 import functools
 import isolation.isolation
-import deeplearn04.deeplearn04 as dl
 
 
 class Timeout(Exception):
@@ -48,7 +47,7 @@ def custom_score(game, player):
         return utility
 
 #    return custom_score_0(game, player)
-    return custom_score_1(game, player)
+    return custom_score_x(game, player)
 
 
 knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
@@ -103,7 +102,8 @@ def get_cs1_dlscore():
         arg_dict['train_memory'] = 10
         dll = dl.DeepLearn(arg_dict)
 #        dll.load_sess('tensorflow_resource/dl04-100000')
-        dll.load_sess('tensorflow_resource/dl04-732000')
+#         dll.load_sess('tensorflow_resource/dl04-732000')
+        dll.load_sess('tensorflow_resource/dl07-70000')
         cs1_dlscore = dl.Score(dll)
     return cs1_dlscore
 
@@ -468,3 +468,9 @@ class CustomPlayer:
                 if beta <= alpha:
                     break
             return v, random.choice(ret_move_list)
+
+custom_score_x = custom_score_1
+
+if custom_score_x == custom_score_1:
+    import deeplearn07.deeplearn07 as dl
+    get_cs1_dlscore()
