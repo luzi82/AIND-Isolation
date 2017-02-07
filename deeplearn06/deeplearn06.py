@@ -591,5 +591,5 @@ if __name__ == '__main__':
     log_filename = os.path.join('log','{}-{}-deeplearn.log'.format(str(int(time.time())),MY_NAME))
 #     os.makedirs(os.path.dirname(log_filename),exist_ok=True)
     logging.basicConfig(level=logging.INFO,filename=log_filename)
-    logging.basicConfig(level=logging.DEBUG,filename=log_filename)
+#     logging.basicConfig(level=logging.DEBUG,filename=log_filename)
     tf.app.run()
