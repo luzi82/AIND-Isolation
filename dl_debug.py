@@ -93,6 +93,7 @@ class HumanDLPlayer():
         score_list = None
         if len(legal_moves) <= 8:
 #             print('score')
+            score_dict = {}
             score2_dict = {}
 
             train_list_dict = {
@@ -109,6 +110,9 @@ class HumanDLPlayer():
 
                 choice_0 = dl.rc_to_idx(game,move)
                 game_1 = game.forecast_move(move)
+
+                score = self.dlscore.score(game_1,self)
+                score_dict[move] = score
                 
                 train_dict={}
                 train_dict['state_0']       = state_0
@@ -126,7 +130,7 @@ class HumanDLPlayer():
 
             lhs_np_v, rhs_np_v, _ = self.dlscore.dl.cal_loss_v(train_list_dict)
 
-            print(('\n'.join(['[%d] %s %f %f %f' % (i, str(move), lhs_np_v[i], rhs_np_v[i], score2_dict[move]) for i, move in enumerate(legal_moves)])))
+            print(('\n'.join(['[%d] %s %f %f=%f %f' % (i, str(move), lhs_np_v[i], rhs_np_v[i], score_dict[move], score2_dict[move]) for i, move in enumerate(legal_moves)])))
         elif len(legal_moves) == 48:
             score_dict = {}
             score1_dict = {}
