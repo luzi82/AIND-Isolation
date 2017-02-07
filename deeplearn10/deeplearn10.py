@@ -25,14 +25,14 @@ def new_state_ph():
 def new_model_var_dict():
     stddev = 0.4
     ret = {}
-    ret['w0']=tf.Variable(tf.random_normal([147,148] ,stddev=stddev,dtype=tf.float32))
-    ret['b1']=tf.Variable(tf.random_normal([148]     ,stddev=stddev,dtype=tf.float32))
-    ret['w2']=tf.Variable(tf.random_normal([148,102]  ,stddev=stddev,dtype=tf.float32))
-    ret['b3']=tf.Variable(tf.random_normal([102]      ,stddev=stddev,dtype=tf.float32))
-    ret['w4']=tf.Variable(tf.random_normal([102,55]   ,stddev=stddev,dtype=tf.float32))
-    ret['b5']=tf.Variable(tf.random_normal([55]      ,stddev=stddev,dtype=tf.float32))
-    ret['w6']=tf.Variable(tf.random_normal([55,OUTPUT_COUNT]   ,stddev=stddev,dtype=tf.float32))
-    ret['b7']=tf.Variable(tf.random_normal([OUTPUT_COUNT]      ,stddev=stddev,dtype=tf.float32))
+    ret['0w']=tf.Variable(tf.random_normal([147,148] ,stddev=stddev,dtype=tf.float32))
+    ret['1b']=tf.Variable(tf.random_normal([148]     ,stddev=stddev,dtype=tf.float32))
+    ret['2w']=tf.Variable(tf.random_normal([148,102]  ,stddev=stddev,dtype=tf.float32))
+    ret['3b']=tf.Variable(tf.random_normal([102]      ,stddev=stddev,dtype=tf.float32))
+    ret['4w']=tf.Variable(tf.random_normal([102,55]   ,stddev=stddev,dtype=tf.float32))
+    ret['5b']=tf.Variable(tf.random_normal([55]      ,stddev=stddev,dtype=tf.float32))
+    ret['6w']=tf.Variable(tf.random_normal([55,OUTPUT_COUNT]   ,stddev=stddev,dtype=tf.float32))
+    ret['7b']=tf.Variable(tf.random_normal([OUTPUT_COUNT]      ,stddev=stddev,dtype=tf.float32))
     return ret
 
 def new_sample_var_dict(arg_dict):
@@ -85,17 +85,17 @@ def get_fill_train_sample_var_list(sample_var_dict, train_input_ph_dict):
 def get_q(state_ph,var_dict):
     mid = state_ph
     mid = tf.reshape(mid, [-1,147])
-    mid = tf.matmul(mid,var_dict['w0'])
-    mid = mid + var_dict['b1']
+    mid = tf.matmul(mid,var_dict['0w'])
+    mid = mid + var_dict['1b']
     mid = tf.nn.elu(mid)
-    mid = tf.matmul(mid,var_dict['w2'])
-    mid = mid + var_dict['b3']
+    mid = tf.matmul(mid,var_dict['2w'])
+    mid = mid + var_dict['3b']
     mid = tf.nn.elu(mid)
-    mid = tf.matmul(mid,var_dict['w4'])
-    mid = mid + var_dict['b5']
+    mid = tf.matmul(mid,var_dict['4w'])
+    mid = mid + var_dict['5b']
     mid = tf.nn.elu(mid)
-    mid = tf.matmul(mid,var_dict['w6'])
-    mid = mid + var_dict['b7']
+    mid = tf.matmul(mid,var_dict['6w'])
+    mid = mid + var_dict['7b']
     return mid
 
 def get_train_choice(state_ph,var_dict,random_t,mask,arg_dict):
@@ -361,7 +361,7 @@ class DeepLearn(object):
             timestamp_last = time.time()
             if logging.getLogger().isEnabledFor(logging.INFO):
                 logging.info('CLPNAVGR save session: {}, loss: {}, -log(loss): {}, time: {}, time_i: {}'.format(output_file_name,loss,-math.log(loss),int((time.time()-self.timestamp)*1000),int((timestamp_last-self.timestamp_last)*1000)))
-                logging.info('DPZCZHRE delta {}'.format(json.dumps(delta_mean_dict)))
+                logging.info('DPZCZHRE delta {}'.format(json.dumps(delta_mean_dict,sort_keys=True)))
             self.timestamp_last = timestamp_last
             os.makedirs(os.path.dirname(output_file_name),exist_ok=True)
             self.saver.save(self.sess,output_file_name)
