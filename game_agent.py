@@ -104,7 +104,7 @@ def get_cs1_dlscore():
 #        dll.load_sess('tensorflow_resource/dl04-100000')
 #         dll.load_sess('tensorflow_resource/dl04-732000')
 #         dll.load_sess('tensorflow_resource/dl07-70000')
-        dll.load_sess('tensorflow_resource/dl07-112000')
+        dll.load_sess('tensorflow_resource/dl08-100000')
         cs1_dlscore = dl.Score(dll)
     return cs1_dlscore
 
@@ -473,5 +473,5 @@ class CustomPlayer:
 custom_score_x = custom_score_1
 
 if custom_score_x == custom_score_1:
-    import deeplearn07.deeplearn07 as dl
+    import deeplearn08.deeplearn08 as dl
     get_cs1_dlscore()

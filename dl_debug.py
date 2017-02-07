@@ -1,5 +1,5 @@
 import isolation.isolation
-import deeplearn07.deeplearn07 as dl
+import deeplearn08.deeplearn08 as dl
 import numpy as np
 import json
 import game_agent
@@ -93,20 +93,40 @@ class HumanDLPlayer():
         score_list = None
         if len(legal_moves) <= 8:
 #             print('score')
-            score_list = self.dlscore.score_list(game,self)[0].tolist()
-            score0_dict = {}
-            score1_dict = {}
             score2_dict = {}
+
+            train_list_dict = {
+                'state_0':       [],
+                'choice_0':      [],
+                'state_1':       [],
+                'choice_mask_1': [],
+                'reward_1':      [],
+                'cont_1':        [],
+            }
+            
+            state_0 = dl.get_state(game)
             for move in legal_moves:
-                score0 = score_list[dl.rc_to_idx(game,move)]
-                score0_dict[move] = score0
+
+                choice_0 = dl.rc_to_idx(game,move)
                 game_1 = game.forecast_move(move)
-                score1 = self.dlscore.score(game_1,self)
-                score1_dict[move] = score1
+                
+                train_dict={}
+                train_dict['state_0']       = state_0
+                train_dict['choice_0']      = choice_0
+                train_dict['state_1']       = dl.get_state(game_1)
+                train_dict['choice_mask_1'] = dl.get_choice_mask(game_1)
+                train_dict['reward_1']      = dl.get_reward(game_1)
+                train_dict['cont_1']        = dl.get_cont(game_1)
+                
+                for k, v in train_dict.items():
+                    train_list_dict[k].append(train_dict[k])
+                
                 score2 = game_agent.custom_score_0(game_1,self)
                 score2_dict[move] = score2
-#             print('\n'.join(['%d %s %f'%(i, str(dl.idx_to_rc(game,i)), score_list[i]) for i in range(len(score_list))]))
-            print(('\n'.join(['[%d] %s %d %f %f %f' % (i, str(move), dl.rc_to_idx(game,move), score0_dict[move], score1_dict[move], score2_dict[move]) for i, move in enumerate(legal_moves)])))
+
+            lhs_np_v, rhs_np_v, _ = self.dlscore.dl.cal_loss_v(train_list_dict)
+
+            print(('\n'.join(['[%d] %s %f %f %f' % (i, str(move), lhs_np_v[i], rhs_np_v[i], score2_dict[move]) for i, move in enumerate(legal_moves)])))
         elif len(legal_moves) == 48:
             score_dict = {}
             score1_dict = {}
@@ -146,7 +166,8 @@ if __name__ == '__main__':
 #        dll.load_sess('tensorflow_resource/dl04-100000')
 #     dll.load_sess('tensorflow_resource/dl05-768000')
 #     dll.load_sess('tensorflow_resource/dl06-1736000')
-    dll.load_sess('tensorflow_resource/dl07-70000')
+#     dll.load_sess('tensorflow_resource/dl07-70000')
+    dll.load_sess('tensorflow_resource/dl08-100000')
     dlscore = dl.Score(dll)
     
     player1 = HumanDLPlayer(dlscore)
