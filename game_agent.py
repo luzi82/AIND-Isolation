@@ -451,7 +451,7 @@ class CustomPlayer:
                     break
             return v, random.choice(ret_move_list)
 
-custom_score_x = custom_score_1
+custom_score_x = custom_score_0
 
 if custom_score_x == custom_score_1:
     import deeplearn10.deeplearn10 as dl
