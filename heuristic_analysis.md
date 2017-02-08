@@ -117,7 +117,12 @@ The `tournament2.py` result is as follow:
 
 The result is disappointing.  Here are possible reasons:
 
-- Not enough samples:  Training neural network require lots of samples.  The number of sample above may not be enough.  The function may become smart after some millions of move, but no guarantee.
-- The neural network is too simple:  Only 3 hidden layers may not enough to implement smart estimation.  Increasing the layer size may improve accuracy.  However, larger network means higher CPU/GPU demand.
+- Not enough sample
+- The neural network is too simple
+
+Possible improvement:
+
+- Increase the number of sample window size and sample number.  Require more training time.
+- Increase the complexity of neural network.  Apply convolution layer, add more feature to input data set.  Require more CPU / GPU time.
 
 The custom_score_1 require TensorFlow to run.
