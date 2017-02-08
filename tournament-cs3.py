@@ -143,9 +143,6 @@ def play_round(agents, num_matches):
 
 
 def main():
-    
-    if game_agent.custom_score_x != game_agent.custom_score_0:
-        raise Exception('game_agent.custom_score_x != game_agent.custom_score_0')
 
     HEURISTICS = [("Null", null_score),
                   ("Open", open_move_score),
@@ -175,11 +172,11 @@ def main():
 
     print(DESCRIPTION)
 
-    decay_list = [1./i for i in range(2,11)]
+    cs3_2b_ratio_list = [0.02*i for i in range(1,11)]
     
-    for decay in decay_list:
-        game_agent.cs0_decay=decay
-        print('{}'.format(decay))
+    for cs3_2b_ratio in cs3_2b_ratio_list:
+        game_agent.cs3_2b_ratio=cs3_2b_ratio
+        print('cs3_2b_ratio = {}'.format(cs3_2b_ratio))
         for agentUT in test_agents:
             print("")
             print("*************************")

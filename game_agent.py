@@ -12,6 +12,7 @@ import numpy as np
 from collections import deque
 import functools
 import isolation.isolation
+import math
 
 
 class Timeout(Exception):
@@ -51,7 +52,7 @@ def custom_score(game, player):
 
 
 knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
-cs0_decay = 1./10
+cs0_decay = 1./6
 
 def custom_score_0(game, player):
     p0 = player
@@ -108,6 +109,67 @@ def get_knight_move_v(size_wh,location):
             continue
         ret.append((rr,cc))
     return ret
+
+
+def custom_score_2a(game, player):
+    p0 = player
+    p1 = game.get_opponent(p0)
+    r0, c0 = game.get_player_location(p0)
+    r1, c1 = game.get_player_location(p1)
+    w, h = game.width, game.height
+    center_c = (w-1)/2
+    center_r = (h-1)/2
+    dist0 = math.hypot(c0-center_c,r0-center_r)
+    dist1 = math.hypot(c1-center_c,r1-center_r)
+    return dist0 - dist1
+
+def custom_score_2b(game, player):
+    return -custom_score_2a(game, player)
+
+cs3_2_ratio = 0.5
+
+def custom_score_3a(game, player):
+    score_0 = custom_score_0(game, player)
+    score_2 = custom_score_2a(game, player)
+    return score_0 + cs3_2_ratio * score_2
+
+def custom_score_3b(game, player):
+    score_0 = custom_score_0(game, player)
+    score_2 = custom_score_2b(game, player)
+    return score_0 + cs3_2_ratio * score_2
+
+
+cs4_ratio = 0.99
+
+def custom_score_4(game, player):
+    game0 = game.copy()
+    w, h = game.width, game.height
+    center_c = (w-1)/2
+    center_r = (h-1)/2
+    factor = 1.0
+    while True:
+        legal_moves = game0.get_legal_moves()
+        if len(legal_moves) <= 0:
+            break
+        move = None
+        min_dist = float('+inf')
+        for m in legal_moves:
+            c, r = m
+            dist = math.hypot(c-center_c,r-center_r)
+            if dist < min_dist:
+                min_dist = dist
+                move = m
+        game0.apply_move(move)
+        factor *= cs4_ratio
+    return (1 if game0.is_winner(player) else -1) * factor
+
+cs5_r = 0.5
+
+def custom_score_5(game, player):
+    s5 = custom_score_4(game, player) * cs5_r
+    s0 = custom_score_0(game, player) * (1-cs5_r)
+    return s0 + s5
+
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -214,8 +276,8 @@ class CustomPlayer:
             # Handle any actions required at timeout, if necessary
             pass
 
-#        if self.iterative:
-#            print('max_level {}'.format(max_level))
+#         if self.iterative:
+#             print('max_level {}'.format(max_level))
 
         return ret
 
@@ -451,7 +513,7 @@ class CustomPlayer:
                     break
             return v, random.choice(ret_move_list)
 
-custom_score_x = custom_score_0
+custom_score_x = custom_score_4
 
 if custom_score_x == custom_score_1:
     import deeplearn10.deeplearn10 as dl

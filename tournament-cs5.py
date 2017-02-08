@@ -35,7 +35,7 @@ import game_agent
 CustomPlayer = game_agent.CustomPlayer
 custom_score = game_agent.custom_score
 
-NUM_MATCHES = 25  # number of matches against each opponent
+NUM_MATCHES = 250  # number of matches against each opponent
 TIME_LIMIT = 150  # number of milliseconds before timeout
 
 TIMEOUT_WARNING = "One or more agents lost a match this round due to " + \
@@ -143,9 +143,6 @@ def play_round(agents, num_matches):
 
 
 def main():
-    
-    if game_agent.custom_score_x != game_agent.custom_score_0:
-        raise Exception('game_agent.custom_score_x != game_agent.custom_score_0')
 
     HEURISTICS = [("Null", null_score),
                   ("Open", open_move_score),
@@ -175,11 +172,11 @@ def main():
 
     print(DESCRIPTION)
 
-    decay_list = [1./i for i in range(2,11)]
+    cs5_r_list = [0.1*i for i in range(1,10)]
     
-    for decay in decay_list:
-        game_agent.cs0_decay=decay
-        print('{}'.format(decay))
+    for cs5_r in cs5_r_list:
+        game_agent.cs5_r=cs5_r
+        print('cs5_r = {}'.format(cs5_r))
         for agentUT in test_agents:
             print("")
             print("*************************")

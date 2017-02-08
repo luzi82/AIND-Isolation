@@ -166,6 +166,7 @@ def main():
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
     test_agents = [Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
+#     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
 
     print(DESCRIPTION)
     for agentUT in test_agents:
