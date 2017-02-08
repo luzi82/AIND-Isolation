@@ -30,8 +30,10 @@ from sample_players import RandomPlayer
 from sample_players import null_score
 from sample_players import open_move_score
 from sample_players import improved_score
-from game_agent import CustomPlayer
-from game_agent import custom_score
+import game_agent
+
+CustomPlayer = game_agent.CustomPlayer
+custom_score = game_agent.custom_score
 
 NUM_MATCHES = 25  # number of matches against each opponent
 TIME_LIMIT = 150  # number of milliseconds before timeout
@@ -112,8 +114,6 @@ def play_round(agents, num_matches):
 
     print("\nPlaying Matches:")
     print("----------")
-    
-    win_list = []
 
     for idx, agent_2 in enumerate(agents[:-1]):
 
@@ -130,12 +130,9 @@ def play_round(agents, num_matches):
                 total += score_1 + score_2
 
         wins += counts[agent_1.player]
-        win_list.append(int(counts[agent_1.player]))
 
         print("\tResult: {} to {}".format(int(counts[agent_1.player]),
                                           int(counts[agent_2.player])))
-
-    print("<tr><th></th>{}<td>{:0.2f}%</td></tr>".format("".join(["<td>{}</td>".format(i)for i in win_list]),100. * wins / total))
 
     return 100. * wins / total
 
@@ -165,21 +162,28 @@ def main():
     # systems; i.e., the performance of the student agent is considered
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
+#     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
     test_agents = [Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
 
     print(DESCRIPTION)
-    for agentUT in test_agents:
-        print("")
-        print("*************************")
-        print("{:^25}".format("Evaluating: " + agentUT.name))
-        print("*************************")
 
-        agents = random_agents + mm_agents + ab_agents + [agentUT]
-        win_ratio = play_round(agents, NUM_MATCHES)
-
-        print("\n\nResults:")
-        print("----------")
-        print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
+    decay_list = [1./i for i in [5,6,7,9,10]]
+    
+    for decay in decay_list:
+        game_agent.cs0_decay=decay
+        print('{}'.format(decay))
+        for agentUT in test_agents:
+            print("")
+            print("*************************")
+            print("{:^25}".format("Evaluating: " + agentUT.name))
+            print("*************************")
+    
+            agents = random_agents + mm_agents + ab_agents + [agentUT]
+            win_ratio = play_round(agents, NUM_MATCHES)
+    
+            print("\n\nResults:")
+            print("----------")
+            print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
 
 
 if __name__ == "__main__":

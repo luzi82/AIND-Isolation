@@ -51,21 +51,20 @@ def custom_score(game, player):
 
 
 knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
+cs0_decay = 1./10
 
 def custom_score_0(game, player):
     p0 = player
     p1 = game.get_opponent(p0)
-    board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0))
-    board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1))
+    board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0),cs0_decay)
+    board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1),cs0_decay)
     board_score_vv_d = board_score_vv_0-board_score_vv_1
     board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
     board_state_vv = np.array(board_state_vv)
     return np.sum(board_state_vv*board_score_vv_d)
 
-cs0_decay = 1./8
-
 @functools.lru_cache(maxsize=None)
-def get_cs0_board_score_vv_dict(size_wh,location):
+def get_cs0_board_score_vv_dict(size_wh,location,decay):
     w, h = size_wh
     r, c = location
     ret = np.zeros((h,w))
@@ -73,7 +72,7 @@ def get_cs0_board_score_vv_dict(size_wh,location):
     location_score_q = deque([(location,1)])
     while(len(location_score_q)>0):
         loc0, score = location_score_q.popleft()
-        score = score*cs0_decay
+        score = score*decay
         knight_move_v = get_knight_move_v(size_wh,loc0)
         for knight_move in knight_move_v:
             r, c = knight_move
@@ -85,28 +84,10 @@ def get_cs0_board_score_vv_dict(size_wh,location):
 
 
 def custom_score_1(game, player):
-    dlscore = get_cs1_dlscore()
-    return dlscore.score(game, player)
+    return cs1_dlscore.score(game, player)
 
 cs1_dlscore = None
-
-def get_cs1_dlscore():
-    global cs1_dlscore
-    if cs1_dlscore == None:
-        arg_dict = {}
-        arg_dict['output_path'] = None
-        arg_dict['random_stddev'] = 0.1
-        arg_dict['random_move_chance'] = 0.
-        arg_dict['train_beta'] = 0.99
-        arg_dict['continue'] = False
-        arg_dict['train_memory'] = 10
-        dll = dl.DeepLearn(arg_dict)
-#        dll.load_sess('tensorflow_resource/dl04-100000')
-#         dll.load_sess('tensorflow_resource/dl04-732000')
-#         dll.load_sess('tensorflow_resource/dl07-70000')
-        dll.load_sess('tensorflow_resource/dl08-100000')
-        cs1_dlscore = dl.Score(dll)
-    return cs1_dlscore
+cs1_filename = None
 
 @functools.lru_cache(maxsize=None)
 def get_knight_move_v(size_wh,location):
@@ -473,5 +454,16 @@ class CustomPlayer:
 custom_score_x = custom_score_1
 
 if custom_score_x == custom_score_1:
-    import deeplearn08.deeplearn08 as dl
-    get_cs1_dlscore()
+    import deeplearn10.deeplearn10 as dl
+    cs1_filename = 'tensorflow_resource/dl10-600000'
+
+    arg_dict = {}
+    arg_dict['output_path'] = None
+    arg_dict['random_stddev'] = 0.1
+    arg_dict['random_move_chance'] = 0.
+    arg_dict['train_beta'] = 0.99
+    arg_dict['continue'] = False
+    arg_dict['train_memory'] = 10
+    dll = dl.DeepLearn(arg_dict)
+    dll.load_sess(cs1_filename)
+    cs1_dlscore = dl.Score(dll)
