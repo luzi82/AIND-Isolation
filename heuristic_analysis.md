@@ -291,7 +291,7 @@ In CPU limited environment, we recommend `custom_score_0`, as it can run in cons
 
 In extreme limited environment, `custom_score_2b` would be a choice as it does not require much calculation.
 
-tournament.py output:
+### tournament.py output
 
     This script evaluates the performance of the custom heuristic function by
     comparing the strength of an agent using iterative deepening (ID) search with
