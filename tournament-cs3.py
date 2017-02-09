@@ -144,6 +144,9 @@ def play_round(agents, num_matches):
 
 def main():
 
+    if game_agent.custom_score_x != game_agent.custom_score_3:
+        raise Exception('game_agent.custom_score_x != game_agent.custom_score_3')
+
     HEURISTICS = [("Null", null_score),
                   ("Open", open_move_score),
                   ("Improved", improved_score)]
