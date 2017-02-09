@@ -163,12 +163,12 @@ def custom_score_4(game, player):
         factor *= cs4_ratio
     return (1 if game0.is_winner(player) else -1) * factor
 
-cs5_r = 0.5
+cs5_r = 0.3
 
 def custom_score_5(game, player):
-    s5 = custom_score_4(game, player) * cs5_r
     s0 = custom_score_0(game, player) * (1-cs5_r)
-    return s0 + s5
+    s4 = custom_score_4(game, player) * cs5_r
+    return s0 + s4
 
 
 class CustomPlayer:
@@ -513,7 +513,7 @@ class CustomPlayer:
                     break
             return v, random.choice(ret_move_list)
 
-custom_score_x = custom_score_4
+custom_score_x = custom_score_5
 
 if custom_score_x == custom_score_1:
     import deeplearn10.deeplearn10 as dl
