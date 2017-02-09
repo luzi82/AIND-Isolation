@@ -203,6 +203,7 @@ class CustomPlayer:
 
     def __init__(self, search_depth=3, score_fn=custom_score,
                  iterative=True, method='minimax', timeout=10.):
+        print('search_depth {}'.format(search_depth))
         self.search_depth = search_depth
         self.iterative = iterative
         self.score = score_fn
@@ -266,9 +267,9 @@ class CustomPlayer:
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
             if self.iterative:
-                for i in range(search_depth):
+                for i in range(game.width*game.height + 1):
                     _, ret = self.search_fn(game, i+1, legal_moves=legal_moves)
-                    max_level = i
+                    max_level = i+1
             else:
                 _, ret = self.search_fn(game, search_depth, legal_moves=legal_moves)
 
@@ -277,7 +278,7 @@ class CustomPlayer:
             pass
 
 #         if self.iterative:
-#             print('max_level {}'.format(max_level))
+#             print('max_level {}/{}'.format(max_level,self.search_depth))
 
         return ret
 
