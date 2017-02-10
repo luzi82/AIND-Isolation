@@ -47,11 +47,6 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    utility = game.utility(player)
-    if utility < -0.0001 or utility > 0.0001:
-        return utility
-
-#    return custom_score_0(game, player)
     return custom_score_x(game, player)
 
 
@@ -332,7 +327,7 @@ class CustomPlayer:
             legal_moves = game.get_legal_moves()
 
         if len(legal_moves) <= 0:
-            return self.score(game, self), (-1, -1)
+            return game.utility(self), (-1, -1)
 
         if depth == 0:
             return self.score(game, self), (-1, -1)
@@ -395,7 +390,7 @@ class CustomPlayer:
             legal_moves = game.get_legal_moves()
 
         if len(legal_moves) <= 0:
-            return self.score(game, self), (-1, -1)
+            return game.utility(self), (-1, -1)
 
         if depth == 0:
             return self.score(game, self), (-1, -1)
@@ -472,7 +467,7 @@ class CustomPlayer:
             legal_moves = game.get_legal_moves()
 
         if len(legal_moves) <= 0:
-            return self.score(game, self), (-1, -1)
+            return game.utility(self), (-1, -1)
 
         if depth == 0:
             return self.score(game, self), (-1, -1)
