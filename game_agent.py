@@ -50,9 +50,20 @@ def custom_score(game, player):
     return custom_score_x(game, player)
 
 
+def unraw(raw_func):
+    def func(*argv):
+        f0 = raw_func(*argv)
+        def f1(game, player):
+            utility = game.utility(player)
+            if abs(utility) > 0.001:
+                return utility
+            return f0(game, player)
+        return f1
+    return func
+
 knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
 
-def custom_score_0_func(decay):
+def custom_score_0_raw_func(decay):
     def f(game, player):
         p0 = player
         p1 = game.get_opponent(p0)
@@ -64,6 +75,7 @@ def custom_score_0_func(decay):
         return np.sum(board_state_vv*board_score_vv_d)
     return f
 
+custom_score_0_func = unraw(custom_score_0_raw_func)
 
 @functools.lru_cache(maxsize=None)
 def get_cs0_board_score_vv_dict(size_wh,location,decay):
@@ -85,7 +97,7 @@ def get_cs0_board_score_vv_dict(size_wh,location,decay):
     return ret
 
 
-def custom_score_1_func(filename):
+def custom_score_1_raw_func(filename):
     import deeplearn10.deeplearn10 as dl
     arg_dict = {}
     arg_dict['output_path'] = None
@@ -99,6 +111,7 @@ def custom_score_1_func(filename):
     cs1_dlscore = dl.Score(dll)
     return cs1_dlscore.score
 
+custom_score_1_func = unraw(custom_score_1_raw_func)
 
 @functools.lru_cache(maxsize=None)
 def get_knight_move_v(size_wh,location):
@@ -121,7 +134,7 @@ def get_knight_move_v(size_wh,location):
     return ret
 
 
-def custom_score_2a(game, player):
+def custom_score_2a_raw(game, player):
     p0 = player
     p1 = game.get_opponent(p0)
     r0, c0 = game.get_player_location(p0)
@@ -133,20 +146,25 @@ def custom_score_2a(game, player):
     dist1 = math.hypot(c1-center_c,r1-center_r)
     return dist0 - dist1
 
-def custom_score_2b(game, player):
+def custom_score_2b_raw(game, player):
     return -custom_score_2a(game, player)
 
+custom_score_2a = unraw(lambda: custom_score_2a_raw)()
+custom_score_2b = unraw(lambda: custom_score_2b_raw)()
 
-def custom_score_3_func(r0,r3):
-    custom_score_0 = custom_score_0_func(r0)
+
+def custom_score_3_raw_func(r0,r3):
+    custom_score_0_raw = custom_score_0_raw_func(r0)
     def f(game, player):
-        score_0 = custom_score_0(game, player)
-        score_2 = custom_score_2b(game, player)
+        score_0 = custom_score_0_raw(game, player)
+        score_2 = custom_score_2b_raw(game, player)
         return score_0 + r3 * score_2
     return f
 
+custom_score_3_func = unraw(custom_score_3_raw_func)
 
-def custom_score_4_func(r4):
+
+def custom_score_4_raw_func(r4):
     def f(game, player):
         game0 = game.copy()
         w, h = game.width, game.height
@@ -170,15 +188,19 @@ def custom_score_4_func(r4):
         return (1 if game0.is_winner(player) else -1) * factor
     return f
 
+custom_score_4_func = unraw(custom_score_4_raw_func)
 
-def custom_score_5_func(r0,r4,r5):
-    custom_score_0 = custom_score_0_func(r0)
-    custom_score_4 = custom_score_4_func(r4)
+
+def custom_score_5_raw_func(r0,r4,r5):
+    custom_score_0_raw = custom_score_0_raw_func(r0)
+    custom_score_4_raw = custom_score_4_raw_func(r4)
     def f(game, player):
-        s0 = custom_score_0(game, player) * (1-r5)
-        s4 = custom_score_4(game, player) * r5
+        s0 = custom_score_0_raw(game, player) * (1-r5)
+        s4 = custom_score_4_raw(game, player) * r5
         return s0+s4
     return f
+
+custom_score_5_func = unraw(custom_score_5_raw_func)
 
 
 class CustomPlayer:
