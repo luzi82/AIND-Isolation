@@ -252,15 +252,15 @@ Result: (r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99, NUM_MATCHES = 250)
 
 <table border=1>
 <tr><th>r<sub>5</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>0.1</th><td>968</td><td>868</td><td>652</td><td>627</td><td>765</td><td>619</td><td>603</td><td>72.89%</td></tr>
-<tr><th>0.2</th><td>958</td><td>879</td><td>672</td><td>613</td><td>790</td><td>645</td><td>606</td><td>73.76%</td></tr>
-<tr style='color:red'><th>0.3</th><td>974</td><td>905</td><td>671</td><td>669</td><td>808</td><td>625</td><td>617</td><td>75.27%</td></tr>
-<tr><th>0.4</th><td>964</td><td>886</td><td>674</td><td>627</td><td>787</td><td>630</td><td>587</td><td>73.64%</td></tr>
-<tr><th>0.5</th><td>965</td><td>877</td><td>668</td><td>602</td><td>794</td><td>611</td><td>619</td><td>73.37%</td></tr>
-<tr><th>0.6</th><td>958</td><td>890</td><td>686</td><td>630</td><td>782</td><td>637</td><td>609</td><td>74.17%</td></tr>
-<tr><th>0.7</th><td>965</td><td>867</td><td>681</td><td>620</td><td>820</td><td>617</td><td>599</td><td>73.84%</td></tr>
-<tr><th>0.8</th><td>958</td><td>887</td><td>647</td><td>590</td><td>801</td><td>642</td><td>592</td><td>73.10%</td></tr>
-<tr><th>0.9</th><td>968</td><td>894</td><td>644</td><td>614</td><td>795</td><td>633</td><td>589</td><td>73.39%</td></tr>
+<tr><th>0.1</th><td>94</td><td>86</td><td>78</td><td>74</td><td>86</td><td>74</td><td>74</td><td>80.86%</td></tr>
+<tr style='color:red'><th>0.2</th><td>96</td><td>90</td><td>81</td><td>79</td><td>86</td><td>70</td><td>81</td><td>83.29%</td></tr>
+<tr><th>0.3</th><td>96</td><td>89</td><td>76</td><td>77</td><td>92</td><td>75</td><td>78</td><td>83.29%</td></tr>
+<tr><th>0.4</th><td>94</td><td>86</td><td>82</td><td>72</td><td>89</td><td>73</td><td>85</td><td>83.00%</td></tr>
+<tr><th>0.5</th><td>92</td><td>92</td><td>71</td><td>69</td><td>82</td><td>78</td><td>81</td><td>80.71%</td></tr>
+<tr><th>0.6</th><td>97</td><td>84</td><td>79</td><td>72</td><td>90</td><td>75</td><td>72</td><td>81.29%</td></tr>
+<tr><th>0.7</th><td>86</td><td>84</td><td>73</td><td>70</td><td>91</td><td>81</td><td>76</td><td>80.14%</td></tr>
+<tr><th>0.8</th><td>95</td><td>90</td><td>71</td><td>73</td><td>85</td><td>76</td><td>84</td><td>82.00%</td></tr>
+<tr><th>0.9</th><td>97</td><td>91</td><td>75</td><td>77</td><td>85</td><td>67</td><td>71</td><td>80.43%</td></tr>
 </table>
 
 The performance of `custom_score_5` is far better than `custom_score_0` and `custom_score_4`.
