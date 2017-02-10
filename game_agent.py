@@ -147,29 +147,29 @@ def custom_score_3_func(r0,r3):
     return f
 
 
-cs4_ratio = 0.99
-
-def custom_score_4(game, player):
-    game0 = game.copy()
-    w, h = game.width, game.height
-    center_c = (w-1)/2
-    center_r = (h-1)/2
-    factor = 1.0
-    while True:
-        legal_moves = game0.get_legal_moves()
-        if len(legal_moves) <= 0:
-            break
-        move = None
-        min_dist = float('+inf')
-        for m in legal_moves:
-            c, r = m
-            dist = math.hypot(c-center_c,r-center_r)
-            if dist < min_dist:
-                min_dist = dist
-                move = m
-        game0.apply_move(move)
-        factor *= cs4_ratio
-    return (1 if game0.is_winner(player) else -1) * factor
+def custom_score_4_func(r4):
+    def f(game, player):
+        game0 = game.copy()
+        w, h = game.width, game.height
+        center_c = (w-1)/2
+        center_r = (h-1)/2
+        factor = 1.0
+        while True:
+            legal_moves = game0.get_legal_moves()
+            if len(legal_moves) <= 0:
+                break
+            move = None
+            min_dist = float('+inf')
+            for m in legal_moves:
+                c, r = m
+                dist = math.hypot(c-center_c,r-center_r)
+                if dist < min_dist:
+                    min_dist = dist
+                    move = m
+            game0.apply_move(move)
+            factor *= r4
+        return (1 if game0.is_winner(player) else -1) * factor
+    return f
 
 cs5_r = 0.3
 
