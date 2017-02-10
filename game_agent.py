@@ -20,6 +20,10 @@ class Timeout(Exception):
     pass
 
 
+def get_custom_score_x():
+    return custom_score_0_func(1./6)
+
+
 def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
@@ -52,17 +56,19 @@ def custom_score(game, player):
 
 
 knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
-cs0_decay = 1./6
 
-def custom_score_0(game, player):
-    p0 = player
-    p1 = game.get_opponent(p0)
-    board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0),cs0_decay)
-    board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1),cs0_decay)
-    board_score_vv_d = board_score_vv_0-board_score_vv_1
-    board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
-    board_state_vv = np.array(board_state_vv)
-    return np.sum(board_state_vv*board_score_vv_d)
+def custom_score_0_func(decay):
+    def f(game, player):
+        p0 = player
+        p1 = game.get_opponent(p0)
+        board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0),decay)
+        board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1),decay)
+        board_score_vv_d = board_score_vv_0-board_score_vv_1
+        board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
+        board_state_vv = np.array(board_state_vv)
+        return np.sum(board_state_vv*board_score_vv_d)
+    return f
+
 
 @functools.lru_cache(maxsize=None)
 def get_cs0_board_score_vv_dict(size_wh,location,decay):
@@ -84,11 +90,20 @@ def get_cs0_board_score_vv_dict(size_wh,location,decay):
     return ret
 
 
-def custom_score_1(game, player):
-    return cs1_dlscore.score(game, player)
+def custom_score_1_func(filename):
+    import deeplearn10.deeplearn10 as dl
+    arg_dict = {}
+    arg_dict['output_path'] = None
+    arg_dict['random_stddev'] = 0.1
+    arg_dict['random_move_chance'] = 0.
+    arg_dict['train_beta'] = 0.99
+    arg_dict['continue'] = False
+    arg_dict['train_memory'] = 10
+    dll = dl.DeepLearn(arg_dict)
+    dll.load_sess(filename)
+    cs1_dlscore = dl.Score(dll)
+    return cs1_dlscore.score
 
-cs1_dlscore = None
-cs1_filename = None
 
 @functools.lru_cache(maxsize=None)
 def get_knight_move_v(size_wh,location):
@@ -126,42 +141,39 @@ def custom_score_2a(game, player):
 def custom_score_2b(game, player):
     return -custom_score_2a(game, player)
 
-cs3_2_ratio = 0.5
 
-def custom_score_3a(game, player):
-    score_0 = custom_score_0(game, player)
-    score_2 = custom_score_2a(game, player)
-    return score_0 + cs3_2_ratio * score_2
-
-def custom_score_3b(game, player):
-    score_0 = custom_score_0(game, player)
-    score_2 = custom_score_2b(game, player)
-    return score_0 + cs3_2_ratio * score_2
+def custom_score_3_func(r0,r3):
+    custom_score_0 = custom_score_0_func(r0)
+    def f(game, player):
+        score_0 = custom_score_0(game, player)
+        score_2 = custom_score_2b(game, player)
+        return score_0 + r3 * score_2
+    return f
 
 
-cs4_ratio = 0.99
-
-def custom_score_4(game, player):
-    game0 = game.copy()
-    w, h = game.width, game.height
-    center_c = (w-1)/2
-    center_r = (h-1)/2
-    factor = 1.0
-    while True:
-        legal_moves = game0.get_legal_moves()
-        if len(legal_moves) <= 0:
-            break
-        move = None
-        min_dist = float('+inf')
-        for m in legal_moves:
-            c, r = m
-            dist = math.hypot(c-center_c,r-center_r)
-            if dist < min_dist:
-                min_dist = dist
-                move = m
-        game0.apply_move(move)
-        factor *= cs4_ratio
-    return (1 if game0.is_winner(player) else -1) * factor
+def custom_score_4_func(r4):
+    def f(game, player):
+        game0 = game.copy()
+        w, h = game.width, game.height
+        center_c = (w-1)/2
+        center_r = (h-1)/2
+        factor = 1.0
+        while True:
+            legal_moves = game0.get_legal_moves()
+            if len(legal_moves) <= 0:
+                break
+            move = None
+            min_dist = float('+inf')
+            for m in legal_moves:
+                c, r = m
+                dist = math.hypot(c-center_c,r-center_r)
+                if dist < min_dist:
+                    min_dist = dist
+                    move = m
+            game0.apply_move(move)
+            factor *= r4
+        return (1 if game0.is_winner(player) else -1) * factor
+    return f
 
 cs5_r = 0.3
 
@@ -514,19 +526,4 @@ class CustomPlayer:
                     break
             return v, random.choice(ret_move_list)
 
-custom_score_x = custom_score_5
-
-if custom_score_x == custom_score_1:
-    import deeplearn10.deeplearn10 as dl
-    cs1_filename = 'tensorflow_resource/dl10-600000'
-
-    arg_dict = {}
-    arg_dict['output_path'] = None
-    arg_dict['random_stddev'] = 0.1
-    arg_dict['random_move_chance'] = 0.
-    arg_dict['train_beta'] = 0.99
-    arg_dict['continue'] = False
-    arg_dict['train_memory'] = 10
-    dll = dl.DeepLearn(arg_dict)
-    dll.load_sess(cs1_filename)
-    cs1_dlscore = dl.Score(dll)
+custom_score_x = get_custom_score_x()

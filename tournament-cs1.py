@@ -31,6 +31,7 @@ from sample_players import null_score
 from sample_players import open_move_score
 from sample_players import improved_score
 import game_agent
+import argparse
 
 CustomPlayer = game_agent.CustomPlayer
 
@@ -143,6 +144,10 @@ def play_round(agents, num_matches):
 
 def main():
 
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('filename')
+    args = argparser.parse_args()
+
     HEURISTICS = [("Null", null_score),
                   ("Open", open_move_score),
                   ("Improved", improved_score)]
@@ -167,7 +172,7 @@ def main():
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
 #     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
-    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_3_func(1./6, i/5.), **CUSTOM_ARGS), "cs0, r={}".format(i/5.)) for i in range(-4,4) if i != 0]
+    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_1_func(args.filename), **CUSTOM_ARGS), "cs1, {}".format(args.filename))]
 
     print(DESCRIPTION)
     for agentUT in test_agents:
