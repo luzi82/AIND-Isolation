@@ -100,8 +100,6 @@ def custom_score_1_func(filename):
     cs1_dlscore = dl.Score(dll)
     return cs1_dlscore.score
 
-cs1_dlscore = None
-cs1_filename = None
 
 @functools.lru_cache(maxsize=None)
 def get_knight_move_v(size_wh,location):
@@ -139,17 +137,14 @@ def custom_score_2a(game, player):
 def custom_score_2b(game, player):
     return -custom_score_2a(game, player)
 
-cs3_2_ratio = 0.5
 
-def custom_score_3a(game, player):
-    score_0 = custom_score_0(game, player)
-    score_2 = custom_score_2a(game, player)
-    return score_0 + cs3_2_ratio * score_2
-
-def custom_score_3b(game, player):
-    score_0 = custom_score_0(game, player)
-    score_2 = custom_score_2b(game, player)
-    return score_0 + cs3_2_ratio * score_2
+def custom_score_3_func(r0,r3):
+    custom_score_0 = custom_score_0_func(r0)
+    def f(game, player):
+        score_0 = custom_score_0(game, player)
+        score_2 = custom_score_2b(game, player)
+        return score_0 + r3 * score_2
+    return f
 
 
 cs4_ratio = 0.99

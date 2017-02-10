@@ -33,7 +33,6 @@ from sample_players import improved_score
 import game_agent
 
 CustomPlayer = game_agent.CustomPlayer
-custom_score = game_agent.custom_score
 
 NUM_MATCHES = 25  # number of matches against each opponent
 TIME_LIMIT = 150  # number of milliseconds before timeout
@@ -144,9 +143,6 @@ def play_round(agents, num_matches):
 
 def main():
 
-    if game_agent.custom_score_x != game_agent.custom_score_3:
-        raise Exception('game_agent.custom_score_x != game_agent.custom_score_3')
-
     HEURISTICS = [("Null", null_score),
                   ("Open", open_move_score),
                   ("Improved", improved_score)]
@@ -171,27 +167,21 @@ def main():
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
 #     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
-    test_agents = [Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
+    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_3_func(1./6, i/5.), **CUSTOM_ARGS), "cs0, r={}".format(i/5.)) for i in range(-4,4) if i != 0]
 
     print(DESCRIPTION)
+    for agentUT in test_agents:
+        print("")
+        print("*************************")
+        print("{:^25}".format("Evaluating: " + agentUT.name))
+        print("*************************")
 
-    cs3_2b_ratio_list = [0.02*i for i in range(1,11)]
-    
-    for cs3_2b_ratio in cs3_2b_ratio_list:
-        game_agent.cs3_2b_ratio=cs3_2b_ratio
-        print('cs3_2b_ratio = {}'.format(cs3_2b_ratio))
-        for agentUT in test_agents:
-            print("")
-            print("*************************")
-            print("{:^25}".format("Evaluating: " + agentUT.name))
-            print("*************************")
-    
-            agents = random_agents + mm_agents + ab_agents + [agentUT]
-            win_ratio = play_round(agents, NUM_MATCHES)
-    
-            print("\n\nResults:")
-            print("----------")
-            print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
+        agents = random_agents + mm_agents + ab_agents + [agentUT]
+        win_ratio = play_round(agents, NUM_MATCHES)
+
+        print("\n\nResults:")
+        print("----------")
+        print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
 
 
 if __name__ == "__main__":
