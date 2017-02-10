@@ -20,6 +20,10 @@ class Timeout(Exception):
     pass
 
 
+def get_custom_score_x():
+    return custom_score_0_func(1./6)
+
+
 def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
@@ -522,4 +526,4 @@ class CustomPlayer:
                     break
             return v, random.choice(ret_move_list)
 
-custom_score_x = custom_score_0_func(1./6)
+custom_score_x = get_custom_score_x()
