@@ -86,8 +86,19 @@ def get_cs0_board_score_vv_dict(size_wh,location,decay):
     return ret
 
 
-def custom_score_1(game, player):
-    return cs1_dlscore.score(game, player)
+def custom_score_1_func(filename):
+    import deeplearn10.deeplearn10 as dl
+    arg_dict = {}
+    arg_dict['output_path'] = None
+    arg_dict['random_stddev'] = 0.1
+    arg_dict['random_move_chance'] = 0.
+    arg_dict['train_beta'] = 0.99
+    arg_dict['continue'] = False
+    arg_dict['train_memory'] = 10
+    dll = dl.DeepLearn(arg_dict)
+    dll.load_sess(filename)
+    cs1_dlscore = dl.Score(dll)
+    return cs1_dlscore.score
 
 cs1_dlscore = None
 cs1_filename = None
@@ -517,18 +528,3 @@ class CustomPlayer:
             return v, random.choice(ret_move_list)
 
 custom_score_x = custom_score_0_func(1./6)
-
-if custom_score_x == custom_score_1:
-    import deeplearn10.deeplearn10 as dl
-    cs1_filename = 'tensorflow_resource/dl10-600000'
-
-    arg_dict = {}
-    arg_dict['output_path'] = None
-    arg_dict['random_stddev'] = 0.1
-    arg_dict['random_move_chance'] = 0.
-    arg_dict['train_beta'] = 0.99
-    arg_dict['continue'] = False
-    arg_dict['train_memory'] = 10
-    dll = dl.DeepLearn(arg_dict)
-    dll.load_sess(cs1_filename)
-    cs1_dlscore = dl.Score(dll)
