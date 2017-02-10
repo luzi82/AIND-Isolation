@@ -167,7 +167,7 @@ def main():
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
 #     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
-    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_3_func(1./6, i/5.), **CUSTOM_ARGS), "cs0, r={}".format(i/5.)) for i in range(-4,4) if i != 0]
+    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_3_func(1./6, i/5.), **CUSTOM_ARGS), "cs3, r={}".format(i/5.)) for i in range(-4,5) if i != 0]
 
     print(DESCRIPTION)
     for agentUT in test_agents:
