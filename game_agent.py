@@ -52,17 +52,19 @@ def custom_score(game, player):
 
 
 knight_v=[(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2),(1,2)]
-cs0_decay = 1./6
 
-def custom_score_0(game, player):
-    p0 = player
-    p1 = game.get_opponent(p0)
-    board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0),cs0_decay)
-    board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1),cs0_decay)
-    board_score_vv_d = board_score_vv_0-board_score_vv_1
-    board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
-    board_state_vv = np.array(board_state_vv)
-    return np.sum(board_state_vv*board_score_vv_d)
+def custom_score_0_func(decay):
+    def f(game, player):
+        p0 = player
+        p1 = game.get_opponent(p0)
+        board_score_vv_0 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p0),decay)
+        board_score_vv_1 = get_cs0_board_score_vv_dict((game.width,game.height),game.get_player_location(p1),decay)
+        board_score_vv_d = board_score_vv_0-board_score_vv_1
+        board_state_vv = [[bs==isolation.isolation.Board.BLANK for bs in bs_v] for bs_v in game.__board_state__]
+        board_state_vv = np.array(board_state_vv)
+        return np.sum(board_state_vv*board_score_vv_d)
+    return f
+
 
 @functools.lru_cache(maxsize=None)
 def get_cs0_board_score_vv_dict(size_wh,location,decay):
@@ -514,7 +516,7 @@ class CustomPlayer:
                     break
             return v, random.choice(ret_move_list)
 
-custom_score_x = custom_score_5
+custom_score_x = custom_score_0_func(1./6)
 
 if custom_score_x == custom_score_1:
     import deeplearn10.deeplearn10 as dl
