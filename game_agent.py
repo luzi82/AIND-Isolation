@@ -170,12 +170,15 @@ def custom_score_4_func(r4):
         return (1 if game0.is_winner(player) else -1) * factor
     return f
 
-cs5_r = 0.3
 
-def custom_score_5(game, player):
-    s0 = custom_score_0(game, player) * (1-cs5_r)
-    s4 = custom_score_4(game, player) * cs5_r
-    return s0 + s4
+def custom_score_5_func(r0,r4,r5):
+    custom_score_0 = custom_score_0_func(r0)
+    custom_score_4 = custom_score_4_func(r4)
+    def f(game, player):
+        s0 = custom_score_0(game, player) * (1-r5)
+        s4 = custom_score_4(game, player) * r5
+        return s0+s4
+    return f
 
 
 class CustomPlayer:

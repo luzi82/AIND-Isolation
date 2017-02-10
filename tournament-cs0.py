@@ -136,7 +136,7 @@ def play_round(agents, num_matches):
         print("\tResult: {} to {}".format(int(counts[agent_1.player]),
                                           int(counts[agent_2.player])))
 
-    print("<tr><th></th>{}<td>{:0.2f}%</td></tr>".format("".join(["<td>{}</td>".format(i)for i in win_list]),100. * wins / total))
+    print("<tr><th>{}</th>{}<td>{:0.2f}%</td></tr>".format(agent_1.name,"".join(["<td>{}</td>".format(i)for i in win_list]),100. * wins / total))
 
     return 100. * wins / total
 
@@ -167,7 +167,7 @@ def main():
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
 #     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
-    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_0_func(1./i), **CUSTOM_ARGS), "cs0, r=1/{}".format(i)) for i in range(2,11)]
+    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_0_func(1./i), **CUSTOM_ARGS), "1/{}".format(i)) for i in range(2,11)]
 
     print(DESCRIPTION)
     for agentUT in test_agents:

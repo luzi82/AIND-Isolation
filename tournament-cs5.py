@@ -137,15 +137,12 @@ def play_round(agents, num_matches):
         print("\tResult: {} to {}".format(int(counts[agent_1.player]),
                                           int(counts[agent_2.player])))
 
-    print("<tr><th></th>{}<td>{:0.2f}%</td></tr>".format("".join(["<td>{}</td>".format(i)for i in win_list]),100. * wins / total))
+    print("<tr><th>{}</th>{}<td>{:0.2f}%</td></tr>".format(agent_1.name,"".join(["<td>{}</td>".format(i)for i in win_list]),100. * wins / total))
 
     return 100. * wins / total
 
 
 def main():
-
-    if game_agent.custom_score_x != game_agent.custom_score_5:
-        raise Exception('game_agent.custom_score_x != game_agent.custom_score_5')
 
     HEURISTICS = [("Null", null_score),
                   ("Open", open_move_score),
@@ -171,27 +168,21 @@ def main():
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
 #     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
-    test_agents = [Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
+    test_agents = [Agent(CustomPlayer(score_fn=game_agent.custom_score_5_func(1./6,0.99,i/10.), **CUSTOM_ARGS), "{}".format(i/10.)) for i in range(1,10)]
 
     print(DESCRIPTION)
+    for agentUT in test_agents:
+        print("")
+        print("*************************")
+        print("{:^25}".format("Evaluating: " + agentUT.name))
+        print("*************************")
 
-    cs5_r_list = [0.1*i for i in range(1,10)]
-    
-    for cs5_r in cs5_r_list:
-        game_agent.cs5_r=cs5_r
-        print('cs5_r = {}'.format(cs5_r))
-        for agentUT in test_agents:
-            print("")
-            print("*************************")
-            print("{:^25}".format("Evaluating: " + agentUT.name))
-            print("*************************")
-    
-            agents = random_agents + mm_agents + ab_agents + [agentUT]
-            win_ratio = play_round(agents, NUM_MATCHES)
-    
-            print("\n\nResults:")
-            print("----------")
-            print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
+        agents = random_agents + mm_agents + ab_agents + [agentUT]
+        win_ratio = play_round(agents, NUM_MATCHES)
+
+        print("\n\nResults:")
+        print("----------")
+        print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
 
 
 if __name__ == "__main__":

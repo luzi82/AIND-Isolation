@@ -179,18 +179,16 @@ Since we know `custom_score_0` and `custom_score_2b` are good heuristic function
     custom_score_3b = custom_score_0(r=1/6) + r3 * custom_score_2b
 
 <table border=1>
-<tr><th>r<sub>3b</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>0</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>0.02</th><td>93</td><td>79</td><td>48</td><td>53</td><td>72</td><td>55</td><td>55</td><td>65.00%</td></tr>
-<tr><th>0.04</th><td>92</td><td>81</td><td>50</td><td>51</td><td>65</td><td>56</td><td>51</td><td>63.71%</td></tr>
-<tr><th>0.06</th><td>92</td><td>77</td><td>50</td><td>57</td><td>66</td><td>55</td><td>46</td><td>63.29%</td></tr>
-<tr><th>0.08</th><td>90</td><td>75</td><td>56</td><td>56</td><td>64</td><td>50</td><td>35</td><td>60.86%</td></tr>
-<tr><th>0.10</th><td>94</td><td>74</td><td>56</td><td>54</td><td>74</td><td>48</td><td>54</td><td>64.86%</td></tr>
-<tr><th>0.12</th><td>95</td><td>76</td><td>56</td><td>58</td><td>69</td><td>51</td><td>45</td><td>64.29%</td></tr>
-<tr><th>0.14</th><td>90</td><td>73</td><td>58</td><td>49</td><td>68</td><td>55</td><td>44</td><td>62.43%</td></tr>
-<tr><th>0.16</th><td>92</td><td>76</td><td>47</td><td>37</td><td>67</td><td>51</td><td>47</td><td>59.57%</td></tr>
-<tr><th>0.18</th><td>96</td><td>73</td><td>50</td><td>51</td><td>66</td><td>55</td><td>51</td><td>63.14%</td></tr>
-<tr><th>0.20</th><td>96</td><td>83</td><td>50</td><td>45</td><td>64</td><td>49</td><td>45</td><td>61.71%</td></tr>
+<tr><th>r<sub>3</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
+
+<tr><th>0.6</th><td>96</td><td>89</td><td>62</td><td>59</td><td>68</td><td>54</td><td>59</td><td>69.57%</td></tr>
+<tr><th>0.4</th><td>94</td><td>82</td><td>61</td><td>62</td><td>74</td><td>59</td><td>58</td><td>70.00%</td></tr>
+<tr><th>0.2</th><td>93</td><td>85</td><td>71</td><td>64</td><td>73</td><td>59</td><td>75</td><td>74.29%</td></tr>
+<tr style='color:blue'><th>cs0</th><td>89</td><td>87</td><td>75</td><td>72</td><td>79</td><td>71</td><td>74</td><td>78.14%</td></tr>
+<tr><th>-0.2</th><td>94</td><td>74</td><td>51</td><td>58</td><td>74</td><td>50</td><td>54</td><td>65.00%</td></tr>
+<tr><th>-0.4</th><td>55</td><td>21</td><td>5</td><td>12</td><td>25</td><td>14</td><td>10</td><td>20.29%</td></tr>
+<tr><th>-0.6</th><td>19</td><td>11</td><td>3</td><td>0</td><td>9</td><td>4</td><td>5</td><td>7.29%</td></tr>
+<tr><th>-0.8</th><td>12</td><td>8</td><td>1</td><td>2</td><td>10</td><td>1</td><td>3</td><td>5.29%</td></tr>
 </table>
 
 It seems `custom_score_2b` bring negative effect to `custom_score_0`.
@@ -235,7 +233,7 @@ It is meaningless to tune r<sub>4</sub>.  We just need to ensure 0 &lt; r<sub>4<
 
 <table border=1>
 <tr><th>type</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>cs4</th><td>95</td><td>81</td><td>47</td><td>51</td><td>71</td><td>53</td><td>52</td><td>64.29%</td></tr>
+<tr><th>cs4</th><td>81</td><td>81</td><td>54</td><td>52</td><td>79</td><td>64</td><td>57</td><td>66.86%</td></tr>
 </table>
 
 It's strength is close to `ID_Improved`, and weaker than `custom_score_0`, even though it consume high CPU.
