@@ -21,18 +21,19 @@ The `tournament2.py` result is as follow:
     
     Playing Matches:
     ----------
-      Match 1: ID_Improved vs   Random      Result: 93 to 7
-      Match 2: ID_Improved vs   MM_Null     Result: 77 to 23
-      Match 3: ID_Improved vs   MM_Open     Result: 54 to 46
-      Match 4: ID_Improved vs MM_Improved   Result: 44 to 56
-      Match 5: ID_Improved vs   AB_Null     Result: 57 to 43
-      Match 6: ID_Improved vs   AB_Open     Result: 34 to 66
-      Match 7: ID_Improved vs AB_Improved   Result: 50 to 50
+      Match 1: ID_Improved vs   Random    	Result: 80 to 20
+      Match 2: ID_Improved vs   MM_Null   	Result: 76 to 24
+      Match 3: ID_Improved vs   MM_Open   	Result: 55 to 45
+      Match 4: ID_Improved vs MM_Improved 	Result: 59 to 41
+      Match 5: ID_Improved vs   AB_Null   	Result: 61 to 39
+      Match 6: ID_Improved vs   AB_Open   	Result: 57 to 43
+      Match 7: ID_Improved vs AB_Improved 	Result: 53 to 47
+    <tr><th></th><td>80</td><td>76</td><td>55</td><td>59</td><td>61</td><td>57</td><td>53</td><td>63.00%</td></tr>
     
     
     Results:
     ----------
-    ID_Improved         58.43%
+    ID_Improved         63.00%
 
 <table border=1>
 <tr><th></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
@@ -71,19 +72,19 @@ The `tournament2.py` result is as follow:
 
 <table border=1>
 <tr><th>r<sub>0</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>1/2</th><td>95</td><td>86</td><td>57</td><td>47</td><td>75</td><td>50</td><td>56</td><td>66.57%</td></tr>
-<tr><th>1/3</th><td>94</td><td>80</td><td>44</td><td>50</td><td>70</td><td>60</td><td>42</td><td>62.86%</td></tr>
-<tr><th>1/4</th><td>93</td><td>82</td><td>51</td><td>53</td><td>65</td><td>51</td><td>46</td><td>63.00%</td></tr>
-<tr><th>1/5</th><td>95</td><td>88</td><td>54</td><td>41</td><td>72</td><td>58</td><td>61</td><td>67.00%</td></tr>
-<tr style='color:red'><th>1/6</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>1/7</th><td>91</td><td>83</td><td>48</td><td>53</td><td>73</td><td>54</td><td>53</td><td>65.00%</td></tr>
-<tr><th>1/8</th><td>98</td><td>79</td><td>51</td><td>47</td><td>77</td><td>55</td><td>51</td><td>65.43%</td></tr>
-<tr><th>1/9</th><td>94</td><td>82</td><td>54</td><td>52</td><td>72</td><td>53</td><td>56</td><td>66.14%</td></tr>
-<tr><th>1/10</th><td>92</td><td>77</td><td>54</td><td>57</td><td>68</td><td>56</td><td>57</td><td>65.86%</td></tr>
+<tr><th>1/2</th><td>88</td><td>85</td><td>68</td><td>50</td><td>74</td><td>73</td><td>61</td><td>71.29%</td></tr>
+<tr><th>1/3</th><td>90</td><td>80</td><td>57</td><td>61</td><td>80</td><td>72</td><td>71</td><td>73.00%</td></tr>
+<tr><th>1/4</th><td>93</td><td>78</td><td>66</td><td>58</td><td>81</td><td>70</td><td>60</td><td>72.29%</td></tr>
+<tr><th>1/5</th><td>88</td><td>83</td><td>73</td><td>70</td><td>79</td><td>74</td><td>74</td><td>77.29%</td></tr>
+<tr style='color:red'><th>1/6</th><td>89</td><td>87</td><td>75</td><td>72</td><td>79</td><td>71</td><td>74</td><td>78.14%</td></tr>
+<tr><th>1/7</th><td>87</td><td>79</td><td>74</td><td>74</td><td>77</td><td>75</td><td>72</td><td>76.86%</td></tr>
+<tr><th>1/8</th><td>91</td><td>84</td><td>72</td><td>66</td><td>80</td><td>74</td><td>63</td><td>75.71%</td></tr>
+<tr><th>1/9</th><td>92</td><td>85</td><td>76</td><td>70</td><td>84</td><td>76</td><td>69</td><td>78.86%</td></tr>
+<tr><th>1/10</th><td>90</td><td>87</td><td>74</td><td>68</td><td>85</td><td>75</td><td>68</td><td>78.14%</td></tr>
 </table>
 
 It is sightly better than `ID_Improved`.
-The differences between each r values are too small to make any conclusion.
+Even though r<sub>0</sub>=1/9 achieve the best result, we choose r<sub>0</sub>=1/6 since it perform better against smarter opponents such as `AB_Open` and `AB_Improved`.
 
 ### custom_score_1 (Neural network)
 
