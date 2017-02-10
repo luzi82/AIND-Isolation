@@ -1,0 +1,206 @@
+search_depth 3
+search_depth 3
+search_depth 3
+search_depth 5
+search_depth 5
+search_depth 5
+search_depth 3
+
+This script evaluates the performance of the custom heuristic function by
+comparing the strength of an agent using iterative deepening (ID) search with
+alpha-beta pruning against the strength rating of agents using other heuristic
+functions.  The `ID_Improved` agent provides a baseline by measuring the
+performance of a basic agent using Iterative Deepening and the "improved"
+heuristic (from lecture) on your hardware.  The `Student` agent then measures
+the performance of Iterative Deepening and the custom heuristic against the
+same opponents.
+
+cs5_r = 0.1
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 94 to 6
+  Match 2:   Student   vs   MM_Null   	Result: 86 to 14
+  Match 3:   Student   vs   MM_Open   	Result: 78 to 22
+  Match 4:   Student   vs MM_Improved 	Result: 74 to 26
+  Match 5:   Student   vs   AB_Null   	Result: 86 to 14
+  Match 6:   Student   vs   AB_Open   	Result: 74 to 26
+  Match 7:   Student   vs AB_Improved 	Result: 74 to 26
+<tr><th></th><td>94</td><td>86</td><td>78</td><td>74</td><td>86</td><td>74</td><td>74</td><td>80.86%</td></tr>
+
+
+Results:
+----------
+Student             80.86%
+cs5_r = 0.2
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 96 to 4
+  Match 2:   Student   vs   MM_Null   	Result: 90 to 10
+  Match 3:   Student   vs   MM_Open   	Result: 81 to 19
+  Match 4:   Student   vs MM_Improved 	Result: 79 to 21
+  Match 5:   Student   vs   AB_Null   	Result: 86 to 14
+  Match 6:   Student   vs   AB_Open   	Result: 70 to 30
+  Match 7:   Student   vs AB_Improved 	Result: 81 to 19
+<tr><th></th><td>96</td><td>90</td><td>81</td><td>79</td><td>86</td><td>70</td><td>81</td><td>83.29%</td></tr>
+
+
+Results:
+----------
+Student             83.29%
+cs5_r = 0.30000000000000004
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 96 to 4
+  Match 2:   Student   vs   MM_Null   	Result: 89 to 11
+  Match 3:   Student   vs   MM_Open   	Result: 76 to 24
+  Match 4:   Student   vs MM_Improved 	Result: 77 to 23
+  Match 5:   Student   vs   AB_Null   	Result: 92 to 8
+  Match 6:   Student   vs   AB_Open   	Result: 75 to 25
+  Match 7:   Student   vs AB_Improved 	Result: 78 to 22
+<tr><th></th><td>96</td><td>89</td><td>76</td><td>77</td><td>92</td><td>75</td><td>78</td><td>83.29%</td></tr>
+
+
+Results:
+----------
+Student             83.29%
+cs5_r = 0.4
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 94 to 6
+  Match 2:   Student   vs   MM_Null   	Result: 86 to 14
+  Match 3:   Student   vs   MM_Open   	Result: 82 to 18
+  Match 4:   Student   vs MM_Improved 	Result: 72 to 28
+  Match 5:   Student   vs   AB_Null   	Result: 89 to 11
+  Match 6:   Student   vs   AB_Open   	Result: 73 to 27
+  Match 7:   Student   vs AB_Improved 	Result: 85 to 15
+<tr><th></th><td>94</td><td>86</td><td>82</td><td>72</td><td>89</td><td>73</td><td>85</td><td>83.00%</td></tr>
+
+
+Results:
+----------
+Student             83.00%
+cs5_r = 0.5
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 92 to 8
+  Match 2:   Student   vs   MM_Null   	Result: 92 to 8
+  Match 3:   Student   vs   MM_Open   	Result: 71 to 29
+  Match 4:   Student   vs MM_Improved 	Result: 69 to 31
+  Match 5:   Student   vs   AB_Null   	Result: 82 to 18
+  Match 6:   Student   vs   AB_Open   	Result: 78 to 22
+  Match 7:   Student   vs AB_Improved 	Result: 81 to 19
+<tr><th></th><td>92</td><td>92</td><td>71</td><td>69</td><td>82</td><td>78</td><td>81</td><td>80.71%</td></tr>
+
+
+Results:
+----------
+Student             80.71%
+cs5_r = 0.6000000000000001
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 97 to 3
+  Match 2:   Student   vs   MM_Null   	Result: 84 to 16
+  Match 3:   Student   vs   MM_Open   	Result: 79 to 21
+  Match 4:   Student   vs MM_Improved 	Result: 72 to 28
+  Match 5:   Student   vs   AB_Null   	Result: 90 to 10
+  Match 6:   Student   vs   AB_Open   	Result: 75 to 25
+  Match 7:   Student   vs AB_Improved 	Result: 72 to 28
+<tr><th></th><td>97</td><td>84</td><td>79</td><td>72</td><td>90</td><td>75</td><td>72</td><td>81.29%</td></tr>
+
+
+Results:
+----------
+Student             81.29%
+cs5_r = 0.7000000000000001
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 86 to 14
+  Match 2:   Student   vs   MM_Null   	Result: 84 to 16
+  Match 3:   Student   vs   MM_Open   	Result: 73 to 27
+  Match 4:   Student   vs MM_Improved 	Result: 70 to 30
+  Match 5:   Student   vs   AB_Null   	Result: 91 to 9
+  Match 6:   Student   vs   AB_Open   	Result: 81 to 19
+  Match 7:   Student   vs AB_Improved 	Result: 76 to 24
+<tr><th></th><td>86</td><td>84</td><td>73</td><td>70</td><td>91</td><td>81</td><td>76</td><td>80.14%</td></tr>
+
+
+Results:
+----------
+Student             80.14%
+cs5_r = 0.8
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 95 to 5
+  Match 2:   Student   vs   MM_Null   	Result: 90 to 10
+  Match 3:   Student   vs   MM_Open   	Result: 71 to 29
+  Match 4:   Student   vs MM_Improved 	Result: 73 to 27
+  Match 5:   Student   vs   AB_Null   	Result: 85 to 15
+  Match 6:   Student   vs   AB_Open   	Result: 76 to 24
+  Match 7:   Student   vs AB_Improved 	Result: 84 to 16
+<tr><th></th><td>95</td><td>90</td><td>71</td><td>73</td><td>85</td><td>76</td><td>84</td><td>82.00%</td></tr>
+
+
+Results:
+----------
+Student             82.00%
+cs5_r = 0.9
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 97 to 3
+  Match 2:   Student   vs   MM_Null   	Result: 91 to 9
+  Match 3:   Student   vs   MM_Open   	Result: 75 to 25
+  Match 4:   Student   vs MM_Improved 	Result: 77 to 23
+  Match 5:   Student   vs   AB_Null   	Result: 85 to 15
+  Match 6:   Student   vs   AB_Open   	Result: 67 to 33
+  Match 7:   Student   vs AB_Improved 	Result: 71 to 29
+<tr><th></th><td>97</td><td>91</td><td>75</td><td>77</td><td>85</td><td>67</td><td>71</td><td>80.43%</td></tr>
+
+
+Results:
+----------
+Student             80.43%

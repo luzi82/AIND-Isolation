@@ -35,7 +35,7 @@ import game_agent
 CustomPlayer = game_agent.CustomPlayer
 custom_score = game_agent.custom_score
 
-NUM_MATCHES = 250  # number of matches against each opponent
+NUM_MATCHES = 25  # number of matches against each opponent
 TIME_LIMIT = 150  # number of milliseconds before timeout
 
 TIMEOUT_WARNING = "One or more agents lost a match this round due to " + \
