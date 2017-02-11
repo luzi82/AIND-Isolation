@@ -4,7 +4,7 @@
 
 The file `tournament2.py` is copy of `tournament.py`, and is changed in following ways:
 
-- Increase NUM_MATCHES from 5 to 25, so more matches will be done.
+- Increase NUM_MATCHES from 5 to 25, so more matches will be done to improve banchmark accuracy.
 - Remove `ID_Improved` from test_agents, since `ID_Improved` is only needed to run once to get it's performance value.
 
 ## Heuristic functions
@@ -21,23 +21,22 @@ The `tournament2.py` result is as follow:
     
     Playing Matches:
     ----------
-      Match 1: ID_Improved vs   Random    	Result: 80 to 20
-      Match 2: ID_Improved vs   MM_Null   	Result: 76 to 24
-      Match 3: ID_Improved vs   MM_Open   	Result: 55 to 45
-      Match 4: ID_Improved vs MM_Improved 	Result: 59 to 41
-      Match 5: ID_Improved vs   AB_Null   	Result: 61 to 39
-      Match 6: ID_Improved vs   AB_Open   	Result: 57 to 43
-      Match 7: ID_Improved vs AB_Improved 	Result: 53 to 47
-    <tr><th></th><td>80</td><td>76</td><td>55</td><td>59</td><td>61</td><td>57</td><td>53</td><td>63.00%</td></tr>
+      Match 1: ID_Improved vs   Random      Result: 89 to 11
+      Match 2: ID_Improved vs   MM_Null     Result: 73 to 27
+      Match 3: ID_Improved vs   MM_Open     Result: 57 to 43
+      Match 4: ID_Improved vs MM_Improved   Result: 54 to 46
+      Match 5: ID_Improved vs   AB_Null     Result: 64 to 36
+      Match 6: ID_Improved vs   AB_Open     Result: 64 to 36
+      Match 7: ID_Improved vs AB_Improved   Result: 57 to 43
     
     
     Results:
     ----------
-    ID_Improved         63.00%
+    ID_Improved         65.43%
 
 <table border=1>
 <tr><th></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>ID_Improved</th><td>93</td><td>77</td><td>54</td><td>44</td><td>57</td><td>34</td><td>50</td><td>58.43%</td></tr>
+<tr><th>ID_Improved</th><td>89</td><td>73</td><td>57</td><td>54</td><td>64</td><td>64</td><td>57</td><td>65.43%</td></tr>
 </table>
 
 ### custom_score_0 (Improved ID_Improved)
@@ -48,7 +47,7 @@ For example, in a 4x4 game:
 
 ![](img/sample_game.png)
 
-We first do breadth first search to find number of move required to go to each cell, in empty board.
+We first do breadth first search to find the number of move required to go to each cell, in empty board.
 
 Since the calculation is based on empty board, the result can be cached to save CPU.
 
@@ -72,19 +71,20 @@ The `tournament2.py` result is as follow:
 
 <table border=1>
 <tr><th>r<sub>0</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>1/2</th><td>88</td><td>85</td><td>68</td><td>50</td><td>74</td><td>73</td><td>61</td><td>71.29%</td></tr>
-<tr><th>1/3</th><td>90</td><td>80</td><td>57</td><td>61</td><td>80</td><td>72</td><td>71</td><td>73.00%</td></tr>
-<tr><th>1/4</th><td>93</td><td>78</td><td>66</td><td>58</td><td>81</td><td>70</td><td>60</td><td>72.29%</td></tr>
-<tr><th>1/5</th><td>88</td><td>83</td><td>73</td><td>70</td><td>79</td><td>74</td><td>74</td><td>77.29%</td></tr>
-<tr style='color:red'><th>1/6</th><td>89</td><td>87</td><td>75</td><td>72</td><td>79</td><td>71</td><td>74</td><td>78.14%</td></tr>
+<tr><th>1/2</th><td>88</td><td>79</td><td>63</td><td>60</td><td>71</td><td>65</td><td>66</td><td>70.29%</td></tr>
+<tr><th>1/3</th><td>91</td><td>82</td><td>68</td><td>60</td><td>77</td><td>67</td><td>63</td><td>72.57%</td></tr>
+<tr><th>1/4</th><td>90</td><td>83</td><td>67</td><td>67</td><td>82</td><td>69</td><td>59</td><td>73.86%</td></tr>
+<tr><th>1/5</th><td>86</td><td>79</td><td>70</td><td>63</td><td>75</td><td>67</td><td>68</td><td>72.57%</td></tr>
+<tr style='color:red'><th>1/6</th><td>90</td><td>84</td><td>76</td><td>64</td><td>83</td><td>77</td><td>74</td><td>78.29%</td></tr>
 <tr><th>1/7</th><td>87</td><td>79</td><td>74</td><td>74</td><td>77</td><td>75</td><td>72</td><td>76.86%</td></tr>
-<tr><th>1/8</th><td>91</td><td>84</td><td>72</td><td>66</td><td>80</td><td>74</td><td>63</td><td>75.71%</td></tr>
-<tr><th>1/9</th><td>92</td><td>85</td><td>76</td><td>70</td><td>84</td><td>76</td><td>69</td><td>78.86%</td></tr>
+<tr><th>1/8</th><td>90</td><td>80</td><td>71</td><td>61</td><td>83</td><td>68</td><td>68</td><td>74.43%</td></tr>
+<tr><th>1/9</th><td>88</td><td>86</td><td>64</td><td>67</td><td>86</td><td>75</td><td>69</td><td>76.43%</td></tr>
 <tr><th>1/10</th><td>90</td><td>87</td><td>74</td><td>68</td><td>85</td><td>75</td><td>68</td><td>78.14%</td></tr>
+<tr style="color:blue"><th>ID_Imp</th><td>89</td><td>73</td><td>57</td><td>54</td><td>64</td><td>64</td><td>57</td><td>65.43%</td></tr>
 </table>
 
-It is sightly better than `ID_Improved`.
-Even though r<sub>0</sub>=1/9 achieve the best result, we choose r<sub>0</sub>=1/6 since it perform better against smarter opponents such as `AB_Open` and `AB_Improved`.
+It is better than `ID_Improved`.
+
 
 ### custom_score_1 (Neural network)
 
@@ -114,7 +114,7 @@ The neural network is trained by following equation:
              = +1                                   if win
              = - gamma * max( Q(s1,a1) for all a1 ) otherwise
 
-Since the Q function return the score of the active player, the right hand side of the equation should be negative, since the second move is made by opponent.
+Since the Q function return the score of the active player, and the second move is made by opponent, the right hand side of the equation should be negative.
 
 Step of training:
 
@@ -157,62 +157,54 @@ The `custom_score_1` require TensorFlow to run.
 ### custom_score_2 (Distance from center)
 
 The output is the distance between player location to the center.
-Since we are not sure it is better to stay at center or edge, so we make 2 opposite functions.
+Since we are not sure it is better to stay at center or edge, so we make 2 opposite functions to verify.
 
 - version 2a: Self distance - Opponent distance.  Stay on edge will get higher score.
 - version 2b: Opponent distance - Self distance.  Stay in center will get higher score.
 
 <table border=1>
 <tr><th></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>2a</th><td>86</td><td>38</td><td>16</td><td>18</td><td>25</td><td>22</td><td>17</td><td>31.71%</td></tr>
-<tr style='color:red'><th>2b</th><td>82</td><td>71</td><td>37</td><td>37</td><td>54</td><td>45</td><td>42</td><td>52.57%</td></tr>
+<tr><th>2a</th><td>82</td><td>73</td><td>60</td><td>48</td><td>64</td><td>60</td><td>49</td><td>62.29%</td></tr>
+<tr><th>2b</th><td>87</td><td>65</td><td>62</td><td>49</td><td>72</td><td>56</td><td>59</td><td>64.29%</td></tr>
 </table>
 
-Even though the result is disappointing, the function is too simple and it achieve 52.57%.
-Moreover the difference of 2a and 2b is high, we may assume that it is better to be in center.
-The discovery can help to develop other score function.
+The agent is weaker than `ID_Improved`.
+
+The difference is so small that we cannot tell which strategy is better.
+So we reduce the search_depth to 1 to verify.
+
+<table border=1>
+<tr><th></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
+<tr><th>2a</th><td>37</td><td>11</td><td>6</td><td>7</td><td>12</td><td>8</td><td>8</td><td>12.71%</td></tr>
+<tr><th>2b</th><td>78</td><td>54</td><td>21</td><td>22</td><td>43</td><td>24</td><td>27</td><td>38.43%</td></tr>
+</table>
+
+Now we can see in depth 1 search, stay in center is better than stay in edge.  The discovery can be used in building better agent.
+
 
 ### custom_score_3 ( custom_score_0 + custom_score_2 )
 
-Since we know `custom_score_0` and `custom_score_2b` are good heuristic functions, so we combine those functions to make a new function.
+`custom_score_3` combine `custom_score_0` and `custom_score_2b` by adding them up.
 
     custom_score_3b = custom_score_0(r=1/6) + r3 * custom_score_2b
 
 <table border=1>
 <tr><th>r<sub>3</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-
-<tr><th>0.6</th><td>96</td><td>89</td><td>62</td><td>59</td><td>68</td><td>54</td><td>59</td><td>69.57%</td></tr>
-<tr><th>0.4</th><td>94</td><td>82</td><td>61</td><td>62</td><td>74</td><td>59</td><td>58</td><td>70.00%</td></tr>
-<tr><th>0.2</th><td>93</td><td>85</td><td>71</td><td>64</td><td>73</td><td>59</td><td>75</td><td>74.29%</td></tr>
+<tr style='color:blue'><th>cs2a</th><td>82</td><td>73</td><td>60</td><td>48</td><td>64</td><td>60</td><td>49</td><td>62.29%</td></tr>
+<tr><th>r=-0.8</th><td>83</td><td>82</td><td>60</td><td>58</td><td>75</td><td>61</td><td>56</td><td>67.86%</td></tr>
+<tr><th>r=-0.6</th><td>89</td><td>80</td><td>65</td><td>57</td><td>77</td><td>57</td><td>54</td><td>68.43%</td></tr>
+<tr><th>r=-0.4</th><td>90</td><td>80</td><td>70</td><td>59</td><td>78</td><td>69</td><td>60</td><td>72.29%</td></tr>
+<tr><th>r=-0.2</th><td>88</td><td>89</td><td>71</td><td>58</td><td>82</td><td>63</td><td>65</td><td>73.71%</td></tr>
 <tr style='color:blue'><th>cs0</th><td>89</td><td>87</td><td>75</td><td>72</td><td>79</td><td>71</td><td>74</td><td>78.14%</td></tr>
-<tr><th>-0.2</th><td>94</td><td>74</td><td>51</td><td>58</td><td>74</td><td>50</td><td>54</td><td>65.00%</td></tr>
-<tr><th>-0.4</th><td>55</td><td>21</td><td>5</td><td>12</td><td>25</td><td>14</td><td>10</td><td>20.29%</td></tr>
-<tr><th>-0.6</th><td>19</td><td>11</td><td>3</td><td>0</td><td>9</td><td>4</td><td>5</td><td>7.29%</td></tr>
-<tr><th>-0.8</th><td>12</td><td>8</td><td>1</td><td>2</td><td>10</td><td>1</td><td>3</td><td>5.29%</td></tr>
+<tr><th>r=0.2</th><td>92</td><td>89</td><td>70</td><td>66</td><td>77</td><td>71</td><td>67</td><td>76.00%</td></tr>
+<tr><th>r=0.4</th><td>86</td><td>80</td><td>65</td><td>67</td><td>77</td><td>77</td><td>69</td><td>74.43%</td></tr>
+<tr><th>r=0.6</th><td>89</td><td>77</td><td>72</td><td>61</td><td>76</td><td>70</td><td>65</td><td>72.86%</td></tr>
+<tr><th>r=0.8</th><td>90</td><td>89</td><td>74</td><td>64</td><td>77</td><td>72</td><td>72</td><td>76.86%</td></tr>
+<tr style='color:blue'><th>cs2b</th><td>87</td><td>65</td><td>62</td><td>49</td><td>72</td><td>56</td><td>59</td><td>64.29%</td></tr>
 </table>
 
-It seems `custom_score_2b` bring negative effect to `custom_score_0`.
+It show both `custom_score_2a` and `custom_score_2b` does not improve `custom_score_0`.
 
-Here is the test to combine `custom_score_0` and `custom_score_2a`
-
-    custom_score_3a = custom_score_0(r=1/6) + r3 * custom_score_2a
-
-<table border=1>
-<tr><th>r<sub>3a</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>0</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>0.02</th><td>90</td><td>77</td><td>53</td><td>54</td><td>61</td><td>52</td><td>44</td><td>61.57%</td></tr>
-<tr><th>0.04</th><td>93</td><td>77</td><td>56</td><td>54</td><td>76</td><td>53</td><td>48</td><td>65.29%</td></tr>
-<tr><th>0.06</th><td>93</td><td>80</td><td>57</td><td>56</td><td>67</td><td>54</td><td>53</td><td>65.71%</td></tr>
-<tr><th>0.08</th><td>98</td><td>81</td><td>60</td><td>51</td><td>73</td><td>57</td><td>51</td><td>67.29%</td></tr>
-<tr><th>0.10</th><td>90</td><td>76</td><td>56</td><td>50</td><td>67</td><td>49</td><td>45</td><td>61.86%</td></tr>
-<tr><th>0.12</th><td>95</td><td>83</td><td>46</td><td>47</td><td>74</td><td>53</td><td>46</td><td>63.43%</td></tr>
-<tr><th>0.14</th><td>91</td><td>91</td><td>55</td><td>46</td><td>60</td><td>47</td><td>44</td><td>62.00%</td></tr>
-<tr><th>0.16</th><td>93</td><td>86</td><td>50</td><td>48</td><td>71</td><td>52</td><td>45</td><td>63.57%</td></tr>
-<tr><th>0.18</th><td>95</td><td>75</td><td>50</td><td>43</td><td>76</td><td>45</td><td>41</td><td>60.71%</td></tr>
-<tr><th>0.20</th><td>97</td><td>80</td><td>51</td><td>40</td><td>78</td><td>49</td><td>45</td><td>62.86%</td></tr>
-</table>
-
-No improvement found also.
 
 ### custom_score_4 (Simulation)
 
@@ -233,7 +225,7 @@ It is meaningless to tune r<sub>4</sub>.  We just need to ensure 0 &lt; r<sub>4<
 
 <table border=1>
 <tr><th>type</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>cs4</th><td>81</td><td>81</td><td>54</td><td>52</td><td>79</td><td>64</td><td>57</td><td>66.86%</td></tr>
+<tr><th>cs4</th><td>93</td><td>77</td><td>67</td><td>63</td><td>68</td><td>68</td><td>59</td><td>70.71%</td></tr>
 </table>
 
 It's strength is close to `ID_Improved`, and weaker than `custom_score_0`, even though it consume high CPU.
@@ -251,18 +243,20 @@ Result: (r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99, NUM_MATCHES = 250)
 
 <table border=1>
 <tr><th>r<sub>5</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>0.1</th><td>94</td><td>86</td><td>78</td><td>74</td><td>86</td><td>74</td><td>74</td><td>80.86%</td></tr>
-<tr style='color:red'><th>0.2</th><td>96</td><td>90</td><td>81</td><td>79</td><td>86</td><td>70</td><td>81</td><td>83.29%</td></tr>
-<tr><th>0.3</th><td>96</td><td>89</td><td>76</td><td>77</td><td>92</td><td>75</td><td>78</td><td>83.29%</td></tr>
-<tr><th>0.4</th><td>94</td><td>86</td><td>82</td><td>72</td><td>89</td><td>73</td><td>85</td><td>83.00%</td></tr>
-<tr><th>0.5</th><td>92</td><td>92</td><td>71</td><td>69</td><td>82</td><td>78</td><td>81</td><td>80.71%</td></tr>
-<tr><th>0.6</th><td>97</td><td>84</td><td>79</td><td>72</td><td>90</td><td>75</td><td>72</td><td>81.29%</td></tr>
-<tr><th>0.7</th><td>86</td><td>84</td><td>73</td><td>70</td><td>91</td><td>81</td><td>76</td><td>80.14%</td></tr>
-<tr><th>0.8</th><td>95</td><td>90</td><td>71</td><td>73</td><td>85</td><td>76</td><td>84</td><td>82.00%</td></tr>
-<tr><th>0.9</th><td>97</td><td>91</td><td>75</td><td>77</td><td>85</td><td>67</td><td>71</td><td>80.43%</td></tr>
+<tr style='color:blue'><th>cs0</th><td>90</td><td>84</td><td>76</td><td>64</td><td>83</td><td>77</td><td>74</td><td>78.29%</td></tr>
+<tr><th>0.1</th><td>93</td><td>88</td><td>78</td><td>75</td><td>83</td><td>76</td><td>73</td><td>80.86%</td></tr>
+<tr><th>0.2</th><td>95</td><td>90</td><td>74</td><td>77</td><td>87</td><td>77</td><td>72</td><td>81.71%</td></tr>
+<tr><th>0.3</th><td>90</td><td>87</td><td>75</td><td>76</td><td>86</td><td>78</td><td>73</td><td>80.71%</td></tr>
+<tr><th>0.4</th><td>93</td><td>89</td><td>73</td><td>69</td><td>90</td><td>73</td><td>77</td><td>80.57%</td></tr>
+<tr style="color:red"><th>0.5</th><td>94</td><td>85</td><td>78</td><td>77</td><td>91</td><td>80</td><td>71</td><td>82.29%</td></tr>
+<tr><th>0.6</th><td>98</td><td>90</td><td>78</td><td>73</td><td>82</td><td>84</td><td>68</td><td>81.86%</td></tr>
+<tr><th>0.7</th><td>90</td><td>91</td><td>72</td><td>70</td><td>89</td><td>79</td><td>72</td><td>80.43%</td></tr>
+<tr><th>0.8</th><td>91</td><td>94</td><td>73</td><td>71</td><td>87</td><td>77</td><td>66</td><td>79.86%</td></tr>
+<tr><th>0.9</th><td>94</td><td>90</td><td>75</td><td>71</td><td>87</td><td>71</td><td>74</td><td>80.29%</td></tr>
+<tr style='color:blue'><th>cs4</th><td>93</td><td>77</td><td>67</td><td>63</td><td>68</td><td>68</td><td>59</td><td>70.71%</td></tr>
 </table>
 
-The performance of `custom_score_5` is far better than `custom_score_0` and `custom_score_4`.
+The performance of `custom_score_5` is better than `custom_score_0` and `custom_score_4`.
 r<sub>0</sub>, r<sub>4</sub>, and r<sub>5</sub> can be further tuned to achieve better performance.
 
 ## Conclusion
@@ -271,22 +265,22 @@ Here is the summary of the heuristic functions:
 
 <table border=1>
 <tr><th>type</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Imp</th><th>AB_Null</th><th>AB_Open</th><th>AB_Imp</th><th>Result</th></tr>
-<tr><th>ID_Improved</th><td>93</td><td>77</td><td>54</td><td>44</td><td>57</td><td>34</td><td>50</td><td>58.43%</td></tr>
-<tr><th>custom_0</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>custom_1</th><td>89</td><td>71</td><td>40</td><td>29</td><td>53</td><td>32</td><td>43</td><td>51.00%</td></tr>
-<tr><th>custom_2b</th><td>82</td><td>71</td><td>37</td><td>37</td><td>54</td><td>45</td><td>42</td><td>52.57%</td></tr>
-<tr><th>custom_3b</th><td>93</td><td>79</td><td>48</td><td>53</td><td>72</td><td>55</td><td>55</td><td>65.00%</td></tr>
-<tr><th>custom_4</th><td>95</td><td>81</td><td>47</td><td>51</td><td>71</td><td>53</td><td>52</td><td>64.29%</td></tr>
-<tr style='color:red'><th>custom_5</th><td>97.4</td><td>90.5</td><td>67.1</td><td>66.9</td><td>80.8</td><td>62.5</td><td>61.7</td><td>75.27%</td></tr>
+<tr style='color:blue'><th>ID_Improved</th><td>89</td><td>73</td><td>57</td><td>54</td><td>64</td><td>64</td><td>57</td><td>65.43%</td></tr>
+<tr><th>cs0</th><td>90</td><td>84</td><td>76</td><td>64</td><td>83</td><td>77</td><td>74</td><td>78.29%</td></tr>
+<tr><th>cs1</th><td>89</td><td>71</td><td>40</td><td>29</td><td>53</td><td>32</td><td>43</td><td>51.00%</td></tr>
+<tr><th>cs2</th><td>87</td><td>65</td><td>62</td><td>49</td><td>72</td><td>56</td><td>59</td><td>64.29%</td></tr>
+<tr><th>cs3</th><td>90</td><td>89</td><td>74</td><td>64</td><td>77</td><td>72</td><td>72</td><td>76.86%</td></tr>
+<tr><th>cs4</th><td>93</td><td>77</td><td>67</td><td>63</td><td>68</td><td>68</td><td>59</td><td>70.71%</td></tr>
+<tr style="color:red"><th>cs5</th><td>94</td><td>85</td><td>78</td><td>77</td><td>91</td><td>80</td><td>71</td><td>82.29%</td></tr>
 </table>
 
 We recommend `custom_score_5`:
 
-- It achieve best result when matching with random opponent, with chance 97.4%.
-- It achieve best result when matching with intelligent opponents such as `open_move_score` and `improved_score`, with higher than 60% chance.
-- It's performance is the best among all other custom score.
+- It achieve best result when matching with random opponent, with chance 94%.
+- It achieve good result when matching with intelligent opponents such as `open_move_score` and `improved_score`, with higher than 70% chance.  Although the winning rate versus `AB_Imp` is slightly lower, it perform best when versus `MM_Open`, `MM_Improve` and `AB_Open`.
+- It's result % is the best among all other custom score.
 
-In CPU limited environment, we recommend `custom_score_0`, as it can run in constant time in larger board.
+In CPU limited environment, we recommend `custom_score_0`, as the evaluate function can run in constant time in larger board.
 
 In extreme limited environment, `custom_score_2b` would be a choice as it does not require much calculation.
 
@@ -308,18 +302,18 @@ In extreme limited environment, `custom_score_2b` would be a choice as it does n
     
     Playing Matches:
     ----------
-      Match 1: ID_Improved vs   Random    	Result: 18 to 2
-      Match 2: ID_Improved vs   MM_Null   	Result: 14 to 6
-      Match 3: ID_Improved vs   MM_Open   	Result: 7 to 13
-      Match 4: ID_Improved vs MM_Improved 	Result: 10 to 10
-      Match 5: ID_Improved vs   AB_Null   	Result: 12 to 8
-      Match 6: ID_Improved vs   AB_Open   	Result: 9 to 11
-      Match 7: ID_Improved vs AB_Improved 	Result: 11 to 9
+      Match 1: ID_Improved vs   Random      Result: 17 to 3
+      Match 2: ID_Improved vs   MM_Null     Result: 14 to 6
+      Match 3: ID_Improved vs   MM_Open     Result: 11 to 9
+      Match 4: ID_Improved vs MM_Improved   Result: 12 to 8
+      Match 5: ID_Improved vs   AB_Null     Result: 15 to 5
+      Match 6: ID_Improved vs   AB_Open     Result: 12 to 8
+      Match 7: ID_Improved vs AB_Improved   Result: 12 to 8
     
     
     Results:
     ----------
-    ID_Improved         57.86%
+    ID_Improved         66.43%
     
     *************************
        Evaluating: Student   
@@ -327,16 +321,15 @@ In extreme limited environment, `custom_score_2b` would be a choice as it does n
     
     Playing Matches:
     ----------
-      Match 1:   Student   vs   Random    	Result: 19 to 1
-      Match 2:   Student   vs   MM_Null   	Result: 17 to 3
-      Match 3:   Student   vs   MM_Open   	Result: 11 to 9
-      Match 4:   Student   vs MM_Improved 	Result: 12 to 8
-      Match 5:   Student   vs   AB_Null   	Result: 17 to 3
-      Match 6:   Student   vs   AB_Open   	Result: 15 to 5
-      Match 7:   Student   vs AB_Improved 	Result: 13 to 7
+      Match 1:   Student   vs   Random      Result: 18 to 2
+      Match 2:   Student   vs   MM_Null     Result: 18 to 2
+      Match 3:   Student   vs   MM_Open     Result: 16 to 4
+      Match 4:   Student   vs MM_Improved   Result: 14 to 6
+      Match 5:   Student   vs   AB_Null     Result: 17 to 3
+      Match 6:   Student   vs   AB_Open     Result: 15 to 5
+      Match 7:   Student   vs AB_Improved   Result: 17 to 3
     
     
     Results:
     ----------
-    Student             74.29%
-    
+    Student             82.14%
