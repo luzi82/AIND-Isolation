@@ -21,7 +21,7 @@ class Timeout(Exception):
 
 
 def get_custom_score_x():
-    return custom_score_0_func(1./6)
+    return custom_score_5_func(1./6,0.99,0.5)
 
 
 def custom_score(game, player):
