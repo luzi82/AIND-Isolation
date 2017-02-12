@@ -506,7 +506,7 @@ class CustomPlayer:
         forecast_v = []
         for move in legal_moves:
             game_0 = game.forecast_move(move)
-            score_0 = self.score(game_0, self)
+            score_0 = self.score_fn_0(game_0, self)
             forecast = {
                 'move': move,
                 'game': game_0,
