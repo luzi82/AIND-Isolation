@@ -30,8 +30,10 @@ from sample_players import RandomPlayer
 from sample_players import null_score
 from sample_players import open_move_score
 from sample_players import improved_score
-from game_agent import CustomPlayer
-from game_agent import custom_score
+import game_agent
+
+CustomPlayer = game_agent.CustomPlayer
+custom_score = game_agent.custom_score
 
 NUM_MATCHES = 25  # number of matches against each opponent
 TIME_LIMIT = 150  # number of milliseconds before timeout
@@ -165,7 +167,7 @@ def main():
     # systems; i.e., the performance of the student agent is considered
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
-    test_agents = [Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
+    test_agents = [Agent(CustomPlayer(score_fn=custom_score, score_fn_0 = game_agent.custom_score_2b_raw, **CUSTOM_ARGS), "Student")]
 #     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
 
     print(DESCRIPTION)

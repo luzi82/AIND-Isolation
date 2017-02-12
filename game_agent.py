@@ -231,10 +231,13 @@ class CustomPlayer:
         Time remaining (in milliseconds) when search is aborted. Should be a
         positive value large enough to allow the function to return before the
         timer expires.
+    
+    score_fn_0 : callable (optional)
+        A function to use for trial order used in alphabeta_0
     """
 
     def __init__(self, search_depth=3, score_fn=custom_score,
-                 iterative=True, method='minimax', timeout=10.):
+                 iterative=True, method='minimax', timeout=10., score_fn_0=None):
         print('search_depth {}'.format(search_depth))
         self.search_depth = search_depth
         self.iterative = iterative
@@ -242,8 +245,11 @@ class CustomPlayer:
         self.method = method
         self.time_left = None
         self.TIMER_THRESHOLD = timeout
+        self.score_fn_0 = score_fn_0 if score_fn_0 != None else self.score
 
-        self.search_fn = self.minimax if method == 'minimax' else self.alphabeta
+        self.search_fn = self.minimax if method == 'minimax' else \
+                         self.alphabeta_0 if method == 'alphabeta_0' else \
+                         self.alphabeta
 
     def get_move(self, game, legal_moves, time_left):
         """Search for the best move from the available legal moves and return a
