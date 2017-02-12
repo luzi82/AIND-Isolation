@@ -137,7 +137,7 @@ def play_round(agents, num_matches):
         print("\tResult: {} to {}".format(int(counts[agent_1.player]),
                                           int(counts[agent_2.player])))
 
-    print("<tr><th></th>{}<td>{:0.2f}%</td></tr>".format("".join(["<td>{}</td>".format(i)for i in win_list]),100. * wins / total))
+#     print("<tr><th></th>{}<td>{:0.2f}%</td></tr>".format("".join(["<td>{}</td>".format(i)for i in win_list]),100. * wins / total))
 
     return 100. * wins / total
 

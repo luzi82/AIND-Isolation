@@ -6,12 +6,12 @@
 
 <div class="lb">
 
-<h2>tournament.py modifications</h2>
+<h2>tournament.py modification</h2>
 
 <p>The file <code>tournament2.py</code> is copy of <code>tournament.py</code>, and is changed in following ways:</p>
 
 <ul>
-<li>Increase NUM_MATCHES from 5 to 25, so more matches will be done.</li>
+<li>Increase NUM_MATCHES from 5 to 25, so more matches will be done to improve banchmark accuracy.</li>
 <li>Remove <code>ID_Improved</code> from test_agents, since <code>ID_Improved</code> is only needed to run once to get it's performance value.</li>
 </ul>
 
@@ -32,23 +32,23 @@
 
 Playing Matches:
 ----------
-  Match 1: ID_Improved vs   Random      Result: 93 to 7
-  Match 2: ID_Improved vs   MM_Null     Result: 77 to 23
-  Match 3: ID_Improved vs   MM_Open     Result: 54 to 46
-  Match 4: ID_Improved vs MM_Improved   Result: 44 to 56
-  Match 5: ID_Improved vs   AB_Null     Result: 57 to 43
-  Match 6: ID_Improved vs   AB_Open     Result: 34 to 66
-  Match 7: ID_Improved vs AB_Improved   Result: 50 to 50
+  Match 1: ID_Improved vs   Random      Result: 89 to 11
+  Match 2: ID_Improved vs   MM_Null     Result: 73 to 27
+  Match 3: ID_Improved vs   MM_Open     Result: 57 to 43
+  Match 4: ID_Improved vs MM_Improved   Result: 54 to 46
+  Match 5: ID_Improved vs   AB_Null     Result: 64 to 36
+  Match 6: ID_Improved vs   AB_Open     Result: 64 to 36
+  Match 7: ID_Improved vs AB_Improved   Result: 57 to 43
 
 
 Results:
 ----------
-ID_Improved         58.43%
+ID_Improved         65.43%
 </code></pre>
 
 <table border=1>
 <tr><th></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>ID_Improved</th><td>93</td><td>77</td><td>54</td><td>44</td><td>57</td><td>34</td><td>50</td><td>58.43%</td></tr>
+<tr><th>ID_Improved</th><td>89</td><td>73</td><td>57</td><td>54</td><td>64</td><td>64</td><td>57</td><td>65.43%</td></tr>
 </table>
 
 </div>
@@ -62,7 +62,7 @@ ID_Improved         58.43%
 
 <p><img src="img/sample_game.png" alt="" /></p>
 
-<p>We first do breadth first search to find number of move required to go to each cell, in empty board.</p>
+<p>We first do breadth first search to find the number of move required to go to each cell, in empty board.</p>
 
 <p>Since the calculation is based on empty board, the result can be cached to save CPU.</p>
 
@@ -88,19 +88,19 @@ ID_Improved         58.43%
 
 <table border=1>
 <tr><th>r<sub>0</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>1/2</th><td>95</td><td>86</td><td>57</td><td>47</td><td>75</td><td>50</td><td>56</td><td>66.57%</td></tr>
-<tr><th>1/3</th><td>94</td><td>80</td><td>44</td><td>50</td><td>70</td><td>60</td><td>42</td><td>62.86%</td></tr>
-<tr><th>1/4</th><td>93</td><td>82</td><td>51</td><td>53</td><td>65</td><td>51</td><td>46</td><td>63.00%</td></tr>
-<tr><th>1/5</th><td>95</td><td>88</td><td>54</td><td>41</td><td>72</td><td>58</td><td>61</td><td>67.00%</td></tr>
-<tr style='color:red'><th>1/6</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>1/7</th><td>91</td><td>83</td><td>48</td><td>53</td><td>73</td><td>54</td><td>53</td><td>65.00%</td></tr>
-<tr><th>1/8</th><td>98</td><td>79</td><td>51</td><td>47</td><td>77</td><td>55</td><td>51</td><td>65.43%</td></tr>
-<tr><th>1/9</th><td>94</td><td>82</td><td>54</td><td>52</td><td>72</td><td>53</td><td>56</td><td>66.14%</td></tr>
-<tr><th>1/10</th><td>92</td><td>77</td><td>54</td><td>57</td><td>68</td><td>56</td><td>57</td><td>65.86%</td></tr>
+<tr><th>1/2</th><td>88</td><td>79</td><td>63</td><td>60</td><td>71</td><td>65</td><td>66</td><td>70.29%</td></tr>
+<tr><th>1/3</th><td>91</td><td>82</td><td>68</td><td>60</td><td>77</td><td>67</td><td>63</td><td>72.57%</td></tr>
+<tr><th>1/4</th><td>90</td><td>83</td><td>67</td><td>67</td><td>82</td><td>69</td><td>59</td><td>73.86%</td></tr>
+<tr><th>1/5</th><td>86</td><td>79</td><td>70</td><td>63</td><td>75</td><td>67</td><td>68</td><td>72.57%</td></tr>
+<tr style='color:red'><th>1/6</th><td>90</td><td>84</td><td>76</td><td>64</td><td>83</td><td>77</td><td>74</td><td>78.29%</td></tr>
+<tr><th>1/7</th><td>87</td><td>79</td><td>74</td><td>74</td><td>77</td><td>75</td><td>72</td><td>76.86%</td></tr>
+<tr><th>1/8</th><td>90</td><td>80</td><td>71</td><td>61</td><td>83</td><td>68</td><td>68</td><td>74.43%</td></tr>
+<tr><th>1/9</th><td>88</td><td>86</td><td>64</td><td>67</td><td>86</td><td>75</td><td>69</td><td>76.43%</td></tr>
+<tr><th>1/10</th><td>90</td><td>87</td><td>74</td><td>68</td><td>85</td><td>75</td><td>68</td><td>78.14%</td></tr>
+<tr style="color:blue"><th>ID_Imp</th><td>89</td><td>73</td><td>57</td><td>54</td><td>64</td><td>64</td><td>57</td><td>65.43%</td></tr>
 </table>
 
-<p>It is sightly better than <code>ID_Improved</code>.
-The differences between each r values are too small to make any conclusion.</p>
+<p>It is better than <code>ID_Improved</code>.</p>
 
 </div>
 <div class="lb">
@@ -123,7 +123,12 @@ The third 7x7 boolean value represent the location of inactive player.</p>
 <p>Then we put the values into 3 hidden layers neural network, which represent the score of 8 move.
 We apply boolean mask to filter out impossible move.</p>
 
-<p>The score of state s would be:</p>
+<p>Score of move a<sub>0</sub> in state s<sub>0</sub>:</p>
+
+<pre><code>Q(s0,a0)
+</code></pre>
+
+<p>The score of state s<sub>0</sub> would be:</p>
 
 <pre><code>max( Q(s0,a0) for all a0 )
 </code></pre>
@@ -135,7 +140,7 @@ We apply boolean mask to filter out impossible move.</p>
          = - gamma * max( Q(s1,a1) for all a1 ) otherwise
 </code></pre>
 
-<p>Since the Q function return the score of the active player, the right hand side of the equation should be negative, since the second move is made by opponent.</p>
+<p>Since the Q function return the score of the active player, and the second move is made by opponent, the right hand side of the equation should be negative.</p>
 
 <p>Step of training:</p>
 
@@ -149,48 +154,36 @@ We apply boolean mask to filter out impossible move.</p>
 <li>continue...</li>
 </ol>
 
+<div class="lb">
+
 <p>The <code>tournament2.py</code> result is as follow:</p>
 
 <table border=1>
 <tr><th>moves</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>200000</th><td>86</td><td>57</td><td>36</td><td>37</td><td>58</td><td>31</td><td>36</td><td>48.71%</td></tr>
-<tr><th>300000</th><td>87</td><td>72</td><td>44</td><td>36</td><td>59</td><td>37</td><td>44</td><td>54.14%</td></tr>
-<tr><th>400000</th><td>86</td><td>70</td><td>32</td><td>38</td><td>54</td><td>37</td><td>36</td><td>50.43%</td></tr>
-<tr><th>500000</th><td>85</td><td>69</td><td>35</td><td>34</td><td>62</td><td>40</td><td>44</td><td>52.71%</td></tr>
-<tr><th>600000</th><td>94</td><td>67</td><td>34</td><td>28</td><td>56</td><td>37</td><td>49</td><td>52.14%</td></tr>
-<tr><th>700000</th><td>89</td><td>71</td><td>40</td><td>29</td><td>53</td><td>32</td><td>43</td><td>51.00%</td></tr>
+<tr><th>200000</th><td>88</td><td>72</td><td>52</td><td>44</td><td>75</td><td>53</td><td>47</td><td>61.57%</td></tr>
+<tr><th>300000</th><td>88</td><td>80</td><td>58</td><td>53</td><td>75</td><td>63</td><td>51</td><td>66.86%</td></tr>
+<tr><th>400000</th><td>88</td><td>78</td><td>61</td><td>47</td><td>70</td><td>57</td><td>54</td><td>65.00%</td></tr>
+<tr><th>500000</th><td>90</td><td>81</td><td>61</td><td>55</td><td>75</td><td>54</td><td>56</td><td>67.43%</td></tr>
+<tr><th>600000</th><td>88</td><td>80</td><td>60</td><td>55</td><td>79</td><td>60</td><td>51</td><td>67.57%</td></tr>
+<tr><th>700000</th><td>82</td><td>77</td><td>53</td><td>56</td><td>80</td><td>63</td><td>50</td><td>65.86%</td></tr>
+<tr><th>3760000</th><td>90</td><td>75</td><td>51</td><td>54</td><td>74</td><td>55</td><td>45</td><td>63.43%</td></tr>
 </table>
-
-<div class="lb">
-
-<p>The result is disappointing.  Here are possible reasons:</p>
-
-<ul>
-<li>Not enough sample</li>
-<li>The neural network is too simple</li>
-</ul>
 
 </div>
 
-<p>Possible improvement:</p>
+<p>The result is disappointing.  The result does not grow in training.</p>
 
-<ul>
-<li>Increase the number of sample window size and sample number.  Require more training time.</li>
-<li>Increase the complexity of neural network.  Apply convolution layer, add more feature to input data set.  Require more CPU / GPU time.</li>
-</ul>
+<p>In order to improve performance, complexity of the neural network should be increase.  For example, apply convolution layer, and add more feature to input data set.  More CPU / GPU time should be required.</p>
 
 <p>Moreover, the trained neural network can be used only in game same as training game.
 For games which have difference size, it is necessary to train another neural network.</p>
 
 <p>The <code>custom_score_1</code> require TensorFlow to run.</p>
 
-</div>
-<div class="lb">
-
 <h3>custom_score_2 (Distance from center)</h3>
 
 <p>The output is the distance between player location to the center.
-Since we are not sure it is better to stay at center or edge, so we make 2 opposite functions.</p>
+Since we are not sure it is better to stay at center or edge, so we make 2 opposite functions to verify.</p>
 
 <ul>
 <li>version 2a: Self distance - Opponent distance.  Stay on edge will get higher score.</li>
@@ -199,65 +192,49 @@ Since we are not sure it is better to stay at center or edge, so we make 2 oppos
 
 <table border=1>
 <tr><th></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>2a</th><td>86</td><td>38</td><td>16</td><td>18</td><td>25</td><td>22</td><td>17</td><td>31.71%</td></tr>
-<tr style='color:red'><th>2b</th><td>82</td><td>71</td><td>37</td><td>37</td><td>54</td><td>45</td><td>42</td><td>52.57%</td></tr>
+<tr><th>2a</th><td>82</td><td>73</td><td>60</td><td>48</td><td>64</td><td>60</td><td>49</td><td>62.29%</td></tr>
+<tr><th>2b</th><td>87</td><td>65</td><td>62</td><td>49</td><td>72</td><td>56</td><td>59</td><td>64.29%</td></tr>
 </table>
 
-<p>Even though the result is disappointing, the function is too simple and it achieve 52.57%.
-Moreover the difference of 2a and 2b is high, we may assume that it is better to be in center.
-The discovery can help to develop other score function.</p>
+<p>The agent is weaker than <code>ID_Improved</code>.</p>
+
+<p>The difference is so small that we cannot tell which strategy is better.
+So we reduce the search_depth to 1 to verify.</p>
+
+<table border=1>
+<tr><th></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
+<tr><th>2a</th><td>37</td><td>11</td><td>6</td><td>7</td><td>12</td><td>8</td><td>8</td><td>12.71%</td></tr>
+<tr><th>2b</th><td>78</td><td>54</td><td>21</td><td>22</td><td>43</td><td>24</td><td>27</td><td>38.43%</td></tr>
+</table>
+
+<p>Now we can see in depth 1 search, stay in center is better than stay in edge.  The discovery can be used in building better agent.</p>
 
 </div>
 <div class="lb">
 
 <h3>custom_score_3 ( custom_score_0 + custom_score_2 )</h3>
 
-<p>Since we know <code>custom_score_0</code> and <code>custom_score_2b</code> are good heuristic functions, so we combine those functions to make a new function.</p>
+<p><code>custom_score_3</code> combine <code>custom_score_0</code> and <code>custom_score_2b</code> by adding them up.</p>
 
 <pre><code>custom_score_3b = custom_score_0(r=1/6) + r3 * custom_score_2b
 </code></pre>
 
 <table border=1>
-<tr><th>r<sub>3b</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>0</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>0.02</th><td>93</td><td>79</td><td>48</td><td>53</td><td>72</td><td>55</td><td>55</td><td>65.00%</td></tr>
-<tr><th>0.04</th><td>92</td><td>81</td><td>50</td><td>51</td><td>65</td><td>56</td><td>51</td><td>63.71%</td></tr>
-<tr><th>0.06</th><td>92</td><td>77</td><td>50</td><td>57</td><td>66</td><td>55</td><td>46</td><td>63.29%</td></tr>
-<tr><th>0.08</th><td>90</td><td>75</td><td>56</td><td>56</td><td>64</td><td>50</td><td>35</td><td>60.86%</td></tr>
-<tr><th>0.10</th><td>94</td><td>74</td><td>56</td><td>54</td><td>74</td><td>48</td><td>54</td><td>64.86%</td></tr>
-<tr><th>0.12</th><td>95</td><td>76</td><td>56</td><td>58</td><td>69</td><td>51</td><td>45</td><td>64.29%</td></tr>
-<tr><th>0.14</th><td>90</td><td>73</td><td>58</td><td>49</td><td>68</td><td>55</td><td>44</td><td>62.43%</td></tr>
-<tr><th>0.16</th><td>92</td><td>76</td><td>47</td><td>37</td><td>67</td><td>51</td><td>47</td><td>59.57%</td></tr>
-<tr><th>0.18</th><td>96</td><td>73</td><td>50</td><td>51</td><td>66</td><td>55</td><td>51</td><td>63.14%</td></tr>
-<tr><th>0.20</th><td>96</td><td>83</td><td>50</td><td>45</td><td>64</td><td>49</td><td>45</td><td>61.71%</td></tr>
+<tr><th>r<sub>3</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
+<tr style='color:blue'><th>cs2a</th><td>82</td><td>73</td><td>60</td><td>48</td><td>64</td><td>60</td><td>49</td><td>62.29%</td></tr>
+<tr><th>r=-0.8</th><td>83</td><td>82</td><td>60</td><td>58</td><td>75</td><td>61</td><td>56</td><td>67.86%</td></tr>
+<tr><th>r=-0.6</th><td>89</td><td>80</td><td>65</td><td>57</td><td>77</td><td>57</td><td>54</td><td>68.43%</td></tr>
+<tr><th>r=-0.4</th><td>90</td><td>80</td><td>70</td><td>59</td><td>78</td><td>69</td><td>60</td><td>72.29%</td></tr>
+<tr><th>r=-0.2</th><td>88</td><td>89</td><td>71</td><td>58</td><td>82</td><td>63</td><td>65</td><td>73.71%</td></tr>
+<tr style='color:blue'><th>cs0</th><td>89</td><td>87</td><td>75</td><td>72</td><td>79</td><td>71</td><td>74</td><td>78.14%</td></tr>
+<tr><th>r=0.2</th><td>92</td><td>89</td><td>70</td><td>66</td><td>77</td><td>71</td><td>67</td><td>76.00%</td></tr>
+<tr><th>r=0.4</th><td>86</td><td>80</td><td>65</td><td>67</td><td>77</td><td>77</td><td>69</td><td>74.43%</td></tr>
+<tr><th>r=0.6</th><td>89</td><td>77</td><td>72</td><td>61</td><td>76</td><td>70</td><td>65</td><td>72.86%</td></tr>
+<tr><th>r=0.8</th><td>90</td><td>89</td><td>74</td><td>64</td><td>77</td><td>72</td><td>72</td><td>76.86%</td></tr>
+<tr style='color:blue'><th>cs2b</th><td>87</td><td>65</td><td>62</td><td>49</td><td>72</td><td>56</td><td>59</td><td>64.29%</td></tr>
 </table>
 
-<p>It seems <code>custom_score_2b</code> bring negative effect to <code>custom_score_0</code>.</p>
-
-<p>Here is the test to combine <code>custom_score_0</code> and <code>custom_score_2a</code></p>
-
-<pre><code>custom_score_3a = custom_score_0(r=1/6) + r3 * custom_score_2a
-</code></pre>
-
-<table border=1>
-<tr><th>r<sub>3a</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>0</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>0.02</th><td>90</td><td>77</td><td>53</td><td>54</td><td>61</td><td>52</td><td>44</td><td>61.57%</td></tr>
-<tr><th>0.04</th><td>93</td><td>77</td><td>56</td><td>54</td><td>76</td><td>53</td><td>48</td><td>65.29%</td></tr>
-<tr><th>0.06</th><td>93</td><td>80</td><td>57</td><td>56</td><td>67</td><td>54</td><td>53</td><td>65.71%</td></tr>
-<tr><th>0.08</th><td>98</td><td>81</td><td>60</td><td>51</td><td>73</td><td>57</td><td>51</td><td>67.29%</td></tr>
-<tr><th>0.10</th><td>90</td><td>76</td><td>56</td><td>50</td><td>67</td><td>49</td><td>45</td><td>61.86%</td></tr>
-<tr><th>0.12</th><td>95</td><td>83</td><td>46</td><td>47</td><td>74</td><td>53</td><td>46</td><td>63.43%</td></tr>
-<tr><th>0.14</th><td>91</td><td>91</td><td>55</td><td>46</td><td>60</td><td>47</td><td>44</td><td>62.00%</td></tr>
-<tr><th>0.16</th><td>93</td><td>86</td><td>50</td><td>48</td><td>71</td><td>52</td><td>45</td><td>63.57%</td></tr>
-<tr><th>0.18</th><td>95</td><td>75</td><td>50</td><td>43</td><td>76</td><td>45</td><td>41</td><td>60.71%</td></tr>
-<tr><th>0.20</th><td>97</td><td>80</td><td>51</td><td>40</td><td>78</td><td>49</td><td>45</td><td>62.86%</td></tr>
-</table>
-
-<p>No improvement found also.</p>
-
-</div>
-<div class="lb">
+<p>It show both <code>custom_score_2a</code> and <code>custom_score_2b</code> does not improve <code>custom_score_0</code>.</p>
 
 <h3>custom_score_4 (Simulation)</h3>
 
@@ -278,7 +255,7 @@ So we may put a cutdown to save CPU.  But now we just simulate to endgame.</p>
 
 <table border=1>
 <tr><th>type</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>cs4</th><td>95</td><td>81</td><td>47</td><td>51</td><td>71</td><td>53</td><td>52</td><td>64.29%</td></tr>
+<tr><th>cs4</th><td>93</td><td>77</td><td>67</td><td>63</td><td>68</td><td>68</td><td>59</td><td>70.71%</td></tr>
 </table>
 
 <p>It's strength is close to <code>ID_Improved</code>, and weaker than <code>custom_score_0</code>, even though it consume high CPU.</p>
@@ -296,22 +273,24 @@ So we may put a cutdown to save CPU.  But now we just simulate to endgame.</p>
 <p>To get the best performance of the function, we need to tune r<sub>0</sub>, r<sub>4</sub> and r<sub>5</sub> together.
 For simplicity we take r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99, and tune r<sub>5</sub>.</p>
 
-<p>Result: (r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99, NUM_MATCHES = 250)</p>
+<p>Result: (r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99)</p>
 
 <table border=1>
 <tr><th>r<sub>5</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>0.1</th><td>968</td><td>868</td><td>652</td><td>627</td><td>765</td><td>619</td><td>603</td><td>72.89%</td></tr>
-<tr><th>0.2</th><td>958</td><td>879</td><td>672</td><td>613</td><td>790</td><td>645</td><td>606</td><td>73.76%</td></tr>
-<tr style='color:red'><th>0.3</th><td>974</td><td>905</td><td>671</td><td>669</td><td>808</td><td>625</td><td>617</td><td>75.27%</td></tr>
-<tr><th>0.4</th><td>964</td><td>886</td><td>674</td><td>627</td><td>787</td><td>630</td><td>587</td><td>73.64%</td></tr>
-<tr><th>0.5</th><td>965</td><td>877</td><td>668</td><td>602</td><td>794</td><td>611</td><td>619</td><td>73.37%</td></tr>
-<tr><th>0.6</th><td>958</td><td>890</td><td>686</td><td>630</td><td>782</td><td>637</td><td>609</td><td>74.17%</td></tr>
-<tr><th>0.7</th><td>965</td><td>867</td><td>681</td><td>620</td><td>820</td><td>617</td><td>599</td><td>73.84%</td></tr>
-<tr><th>0.8</th><td>958</td><td>887</td><td>647</td><td>590</td><td>801</td><td>642</td><td>592</td><td>73.10%</td></tr>
-<tr><th>0.9</th><td>968</td><td>894</td><td>644</td><td>614</td><td>795</td><td>633</td><td>589</td><td>73.39%</td></tr>
+<tr style='color:blue'><th>cs0</th><td>90</td><td>84</td><td>76</td><td>64</td><td>83</td><td>77</td><td>74</td><td>78.29%</td></tr>
+<tr><th>0.1</th><td>93</td><td>88</td><td>78</td><td>75</td><td>83</td><td>76</td><td>73</td><td>80.86%</td></tr>
+<tr><th>0.2</th><td>95</td><td>90</td><td>74</td><td>77</td><td>87</td><td>77</td><td>72</td><td>81.71%</td></tr>
+<tr><th>0.3</th><td>90</td><td>87</td><td>75</td><td>76</td><td>86</td><td>78</td><td>73</td><td>80.71%</td></tr>
+<tr><th>0.4</th><td>93</td><td>89</td><td>73</td><td>69</td><td>90</td><td>73</td><td>77</td><td>80.57%</td></tr>
+<tr style="color:red"><th>0.5</th><td>94</td><td>85</td><td>78</td><td>77</td><td>91</td><td>80</td><td>71</td><td>82.29%</td></tr>
+<tr><th>0.6</th><td>98</td><td>90</td><td>78</td><td>73</td><td>82</td><td>84</td><td>68</td><td>81.86%</td></tr>
+<tr><th>0.7</th><td>90</td><td>91</td><td>72</td><td>70</td><td>89</td><td>79</td><td>72</td><td>80.43%</td></tr>
+<tr><th>0.8</th><td>91</td><td>94</td><td>73</td><td>71</td><td>87</td><td>77</td><td>66</td><td>79.86%</td></tr>
+<tr><th>0.9</th><td>94</td><td>90</td><td>75</td><td>71</td><td>87</td><td>71</td><td>74</td><td>80.29%</td></tr>
+<tr style='color:blue'><th>cs4</th><td>93</td><td>77</td><td>67</td><td>63</td><td>68</td><td>68</td><td>59</td><td>70.71%</td></tr>
 </table>
 
-<p>The performance of <code>custom_score_5</code> is far better than <code>custom_score_0</code> and <code>custom_score_4</code>.
+<p>The performance of <code>custom_score_5</code> is better than <code>custom_score_0</code> and <code>custom_score_4</code>.
 r<sub>0</sub>, r<sub>4</sub>, and r<sub>5</sub> can be further tuned to achieve better performance.</p>
 
 <h2>Conclusion</h2>
@@ -320,24 +299,24 @@ r<sub>0</sub>, r<sub>4</sub>, and r<sub>5</sub> can be further tuned to achieve 
 
 <table border=1>
 <tr><th>type</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Imp</th><th>AB_Null</th><th>AB_Open</th><th>AB_Imp</th><th>Result</th></tr>
-<tr><th>ID_Improved</th><td>93</td><td>77</td><td>54</td><td>44</td><td>57</td><td>34</td><td>50</td><td>58.43%</td></tr>
-<tr><th>custom_0</th><td>86</td><td>83</td><td>62</td><td>54</td><td>72</td><td>58</td><td>58</td><td>67.57%</td></tr>
-<tr><th>custom_1</th><td>89</td><td>71</td><td>40</td><td>29</td><td>53</td><td>32</td><td>43</td><td>51.00%</td></tr>
-<tr><th>custom_2b</th><td>82</td><td>71</td><td>37</td><td>37</td><td>54</td><td>45</td><td>42</td><td>52.57%</td></tr>
-<tr><th>custom_3b</th><td>93</td><td>79</td><td>48</td><td>53</td><td>72</td><td>55</td><td>55</td><td>65.00%</td></tr>
-<tr><th>custom_4</th><td>95</td><td>81</td><td>47</td><td>51</td><td>71</td><td>53</td><td>52</td><td>64.29%</td></tr>
-<tr style='color:red'><th>custom_5</th><td>97.4</td><td>90.5</td><td>67.1</td><td>66.9</td><td>80.8</td><td>62.5</td><td>61.7</td><td>75.27%</td></tr>
+<tr style='color:blue'><th>ID_Improved</th><td>89</td><td>73</td><td>57</td><td>54</td><td>64</td><td>64</td><td>57</td><td>65.43%</td></tr>
+<tr><th>cs0</th><td>90</td><td>84</td><td>76</td><td>64</td><td>83</td><td>77</td><td>74</td><td>78.29%</td></tr>
+<tr><th>cs1</th><td>90</td><td>75</td><td>51</td><td>54</td><td>74</td><td>55</td><td>45</td><td>63.43%</td></tr>
+<tr><th>cs2</th><td>87</td><td>65</td><td>62</td><td>49</td><td>72</td><td>56</td><td>59</td><td>64.29%</td></tr>
+<tr><th>cs3</th><td>90</td><td>89</td><td>74</td><td>64</td><td>77</td><td>72</td><td>72</td><td>76.86%</td></tr>
+<tr><th>cs4</th><td>93</td><td>77</td><td>67</td><td>63</td><td>68</td><td>68</td><td>59</td><td>70.71%</td></tr>
+<tr style="color:red"><th>cs5</th><td>94</td><td>85</td><td>78</td><td>77</td><td>91</td><td>80</td><td>71</td><td>82.29%</td></tr>
 </table>
 
 <p>We recommend <code>custom_score_5</code>:</p>
 
 <ul>
-<li>It achieve best result when matching with random opponent, with chance 97.4%.</li>
-<li>It achieve best result when matching with intelligent opponents such as <code>open_move_score</code> and <code>improved_score</code>, with higher than 60% chance.</li>
-<li>It's performance is the best among all other custom score.</li>
+<li>It achieve best result when matching with random opponent, with chance 94%.</li>
+<li>It achieve good result when matching with intelligent opponents such as <code>open_move_score</code> and <code>improved_score</code>, with higher than 70% chance.  Although the winning rate versus <code>AB_Imp</code> is slightly lower, it perform best when versus <code>MM_Open</code>, <code>MM_Improve</code> and <code>AB_Open</code>.</li>
+<li>It's result % is the best among all other custom score.</li>
 </ul>
 
-<p>In CPU limited environment, we recommend <code>custom_score_0</code>, as it can run in constant time in larger board.</p>
+<p>In CPU limited environment, we recommend <code>custom_score_0</code>, as the evaluate function can run in constant time in larger board.</p>
 
 <p>In extreme limited environment, <code>custom_score_2b</code> would be a choice as it does not require much calculation.</p>
 
@@ -362,18 +341,18 @@ same opponents.
 
 Playing Matches:
 ----------
-  Match 1: ID_Improved vs   Random      Result: 18 to 2
+  Match 1: ID_Improved vs   Random      Result: 17 to 3
   Match 2: ID_Improved vs   MM_Null     Result: 14 to 6
-  Match 3: ID_Improved vs   MM_Open     Result: 7 to 13
-  Match 4: ID_Improved vs MM_Improved   Result: 10 to 10
-  Match 5: ID_Improved vs   AB_Null     Result: 12 to 8
-  Match 6: ID_Improved vs   AB_Open     Result: 9 to 11
-  Match 7: ID_Improved vs AB_Improved   Result: 11 to 9
+  Match 3: ID_Improved vs   MM_Open     Result: 11 to 9
+  Match 4: ID_Improved vs MM_Improved   Result: 12 to 8
+  Match 5: ID_Improved vs   AB_Null     Result: 15 to 5
+  Match 6: ID_Improved vs   AB_Open     Result: 12 to 8
+  Match 7: ID_Improved vs AB_Improved   Result: 12 to 8
 
 
 Results:
 ----------
-ID_Improved         57.86%
+ID_Improved         66.43%
 
 *************************
    Evaluating: Student   
@@ -381,18 +360,18 @@ ID_Improved         57.86%
 
 Playing Matches:
 ----------
-  Match 1:   Student   vs   Random      Result: 19 to 1
-  Match 2:   Student   vs   MM_Null     Result: 17 to 3
-  Match 3:   Student   vs   MM_Open     Result: 11 to 9
-  Match 4:   Student   vs MM_Improved   Result: 12 to 8
+  Match 1:   Student   vs   Random      Result: 18 to 2
+  Match 2:   Student   vs   MM_Null     Result: 18 to 2
+  Match 3:   Student   vs   MM_Open     Result: 16 to 4
+  Match 4:   Student   vs MM_Improved   Result: 14 to 6
   Match 5:   Student   vs   AB_Null     Result: 17 to 3
   Match 6:   Student   vs   AB_Open     Result: 15 to 5
-  Match 7:   Student   vs AB_Improved   Result: 13 to 7
+  Match 7:   Student   vs AB_Improved   Result: 17 to 3
 
 
 Results:
 ----------
-Student             74.29%
+Student             82.14%
 </code></pre>
 
 </div>
