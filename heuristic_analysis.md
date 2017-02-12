@@ -238,7 +238,7 @@ It's strength is close to `ID_Improved`, and weaker than `custom_score_0`, even 
 To get the best performance of the function, we need to tune r<sub>0</sub>, r<sub>4</sub> and r<sub>5</sub> together.
 For simplicity we take r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99, and tune r<sub>5</sub>.
 
-Result: (r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99, NUM_MATCHES = 250)
+Result: (r<sub>0</sub> = 1/6, r<sub>4</sub> = 0.99)
 
 <table border=1>
 <tr><th>r<sub>5</sub></th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
