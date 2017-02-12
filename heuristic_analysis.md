@@ -104,7 +104,11 @@ becomes
 Then we put the values into 3 hidden layers neural network, which represent the score of 8 move.
 We apply boolean mask to filter out impossible move.
 
-The score of state s would be:
+Score of move a<sub>0</sub> in state s<sub>0</sub>:
+
+    Q(s0,a0)
+
+The score of state s<sub>0</sub> would be:
 
     max( Q(s0,a0) for all a0 )
 
@@ -130,23 +134,18 @@ The `tournament2.py` result is as follow:
 
 <table border=1>
 <tr><th>moves</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Improved</th><th>AB_Null</th><th>AB_Open</th><th>AB_Improved</th><th>Result</th></tr>
-<tr><th>200000</th><td>86</td><td>57</td><td>36</td><td>37</td><td>58</td><td>31</td><td>36</td><td>48.71%</td></tr>
-<tr><th>300000</th><td>87</td><td>72</td><td>44</td><td>36</td><td>59</td><td>37</td><td>44</td><td>54.14%</td></tr>
-<tr><th>400000</th><td>86</td><td>70</td><td>32</td><td>38</td><td>54</td><td>37</td><td>36</td><td>50.43%</td></tr>
-<tr><th>500000</th><td>85</td><td>69</td><td>35</td><td>34</td><td>62</td><td>40</td><td>44</td><td>52.71%</td></tr>
-<tr><th>600000</th><td>94</td><td>67</td><td>34</td><td>28</td><td>56</td><td>37</td><td>49</td><td>52.14%</td></tr>
-<tr><th>700000</th><td>89</td><td>71</td><td>40</td><td>29</td><td>53</td><td>32</td><td>43</td><td>51.00%</td></tr>
+<tr><th>200000</th><td>88</td><td>72</td><td>52</td><td>44</td><td>75</td><td>53</td><td>47</td><td>61.57%</td></tr>
+<tr><th>300000</th><td>88</td><td>80</td><td>58</td><td>53</td><td>75</td><td>63</td><td>51</td><td>66.86%</td></tr>
+<tr><th>400000</th><td>88</td><td>78</td><td>61</td><td>47</td><td>70</td><td>57</td><td>54</td><td>65.00%</td></tr>
+<tr><th>500000</th><td>90</td><td>81</td><td>61</td><td>55</td><td>75</td><td>54</td><td>56</td><td>67.43%</td></tr>
+<tr><th>600000</th><td>88</td><td>80</td><td>60</td><td>55</td><td>79</td><td>60</td><td>51</td><td>67.57%</td></tr>
+<tr><th>700000</th><td>82</td><td>77</td><td>53</td><td>56</td><td>80</td><td>63</td><td>50</td><td>65.86%</td></tr>
+<tr><th>3760000</th><td>90</td><td>75</td><td>51</td><td>54</td><td>74</td><td>55</td><td>45</td><td>63.43%</td></tr>
 </table>
 
-The result is disappointing.  Here are possible reasons:
+The result is disappointing.  The result does not grow in training.
 
-- Not enough sample
-- The neural network is too simple
-
-Possible improvement:
-
-- Increase the number of sample window size and sample number.  Require more training time.
-- Increase the complexity of neural network.  Apply convolution layer, add more feature to input data set.  Require more CPU / GPU time.
+In order to improve performance, complexity of the neural network should be increase.  For example, apply convolution layer, and add more feature to input data set.  More CPU / GPU time should be required.
 
 Moreover, the trained neural network can be used only in game same as training game.
 For games which have difference size, it is necessary to train another neural network.
@@ -267,7 +266,7 @@ Here is the summary of the heuristic functions:
 <tr><th>type</th><th>Random</th><th>MM_Null</th><th>MM_Open</th><th>MM_Imp</th><th>AB_Null</th><th>AB_Open</th><th>AB_Imp</th><th>Result</th></tr>
 <tr style='color:blue'><th>ID_Improved</th><td>89</td><td>73</td><td>57</td><td>54</td><td>64</td><td>64</td><td>57</td><td>65.43%</td></tr>
 <tr><th>cs0</th><td>90</td><td>84</td><td>76</td><td>64</td><td>83</td><td>77</td><td>74</td><td>78.29%</td></tr>
-<tr><th>cs1</th><td>89</td><td>71</td><td>40</td><td>29</td><td>53</td><td>32</td><td>43</td><td>51.00%</td></tr>
+<tr><th>cs1</th><td>90</td><td>75</td><td>51</td><td>54</td><td>74</td><td>55</td><td>45</td><td>63.43%</td></tr>
 <tr><th>cs2</th><td>87</td><td>65</td><td>62</td><td>49</td><td>72</td><td>56</td><td>59</td><td>64.29%</td></tr>
 <tr><th>cs3</th><td>90</td><td>89</td><td>74</td><td>64</td><td>77</td><td>72</td><td>72</td><td>76.86%</td></tr>
 <tr><th>cs4</th><td>93</td><td>77</td><td>67</td><td>63</td><td>68</td><td>68</td><td>59</td><td>70.71%</td></tr>
