@@ -149,7 +149,7 @@ def main():
                   ("Improved", improved_score)]
     AB_ARGS = {"search_depth": 5, "method": 'alphabeta', "iterative": False}
     MM_ARGS = {"search_depth": 3, "method": 'minimax', "iterative": False}
-    CUSTOM_ARGS = {"method": 'alphabeta_0', 'iterative': True}
+    CUSTOM_ARGS = {'iterative': True}
 
     # Create a collection of CPU agents using fixed-depth minimax or alpha beta
     # search, or random selection.  The agent names encode the search method
@@ -167,7 +167,8 @@ def main():
     # systems; i.e., the performance of the student agent is considered
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
-    test_agents = [Agent(CustomPlayer(score_fn=custom_score, score_fn_0 = game_agent.custom_score_2b_raw, **CUSTOM_ARGS), "Student")]
+    test_agents = [Agent(CustomPlayer(score_fn=custom_score, method='alphabeta',                                              **CUSTOM_ARGS), "ab"),
+                   Agent(CustomPlayer(score_fn=custom_score, method='alphabeta_0', score_fn_0=game_agent.custom_score_2b_raw, **CUSTOM_ARGS), "ab0")]
 #     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved")]
 
     print(DESCRIPTION)
